@@ -1,8 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import * as jQuery from "jquery";
+import * as $ from "jquery";
 import {Car, CarRetriever} from "./Classes";
-import {CarCard} from "./CarCardComponent";
 import {CarListComponent} from "./CarListComponent";
 import FormEvent = React.FormEvent;
 
