@@ -1,0 +1,132 @@
+{
+  "cars": [
+    {
+      "name": "X80",
+      "plate": "M4K3BANK"
+    },
+    {
+      "name": "T20",
+      "plate": "DEVIL"
+    },
+    {
+      "name": "OSIRIS",
+      "plate": "SLEEK"
+    },
+    {
+      "name": "CHEETAH",
+      "plate": "BUZZED"
+    },
+    {
+      "name": "TYRUS",
+      "plate": "CITRUS"
+    },
+    {
+      "name": "FMJ",
+      "plate": "CATCHME"
+    },
+    {
+      "name": "ENTITY XF",
+      "plate": "OVERFLOD"
+    },
+    {
+      "name": "BLACK FINISH",
+      "plate": "VINTAGE"
+    },
+    {
+      "name": "NIGHTSHADE",
+      "plate": "TH370S"
+    },
+    {
+      "name": "FELTZER",
+      "plate": "POWERFUL"
+    },
+    {
+      "name": "811",
+      "plate": "SLICK"
+    },
+    {
+      "name": "BESTIA",
+      "plate": "BEASTY"
+    },
+    {
+      "name": "SABRE TURBO CUSTOM",
+      "plate": "BOUNCE"
+    },
+    {
+      "name": "TAMPA",
+      "plate": "CHARGED"
+    },
+    {
+      "name": "MAMBA",
+      "plate": "BLACKMAMBA"
+    },
+    {
+      "name": "ALPHA",
+      "plate": "VISIONARY"
+    },
+    {
+      "name": "REAPER",
+      "plate": "DEATH4U"
+    },
+    {
+      "name": "MASSACRO",
+      "plate": "BOSS"
+    },
+    {
+      "name": "ZENTORNO",
+      "plate": "WINNING"
+    },
+    {
+      "name": "COQUETTE CLASSIC",
+      "plate": "TOPLESS"
+    },
+    {
+      "name": "VERLIERER",
+      "plate": "PRECIOUS"
+    },
+    {
+      "name": "ETR1",
+      "plate": "PRETTY"
+    },
+    {
+      "name": "OMNIS",
+      "plate": "WIDEBOD"
+    },
+    {
+      "name": "TROPOS RALLYE",
+      "plate": "1985"
+    },
+    {
+      "name": "JESTER",
+      "plate": "NOFOOL"
+    },
+    {
+      "name": "SULTAN RS",
+      "plate": "SNOWFLKE"
+    },
+    {
+      "name": "BANSHEE 900R",
+      "plate": "DRIFTER"
+    },
+    {
+      "name": "STIRLING GT",
+      "plate": "RALLY"
+    },
+    {
+      "name": "SEVEN-70",
+      "plate": "ALLOY5"
+    },
+    {
+      "name": "TURISMO R",
+      "plate": "TPD4WG"
+    },
+    {
+      "name": "ZTYPE",
+      "plate": "BIG MONEY"
+    },
+    {
+      "name": "ROOSEVELT VALOR",
+      "plate": "OLD TIMER"
+    }
+  ]
+}
