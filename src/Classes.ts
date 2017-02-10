@@ -36,7 +36,7 @@ export class CarRetriever {
 
     static GetCars(): JQueryPromise<Car[]> {
         const result = jQuery.Deferred<Car[]>();
-        const cars = jQuery.get("/cars.json");
+        const cars = jQuery.get("./cars.json");
         cars.then((data: any) => {
             const parsed: Car[] = [];
             data.cars.forEach((car: any) => {
