@@ -16,12 +16,22 @@ export class CarCard extends React.Component<CarCardProps, {}> {
     public Mark(car:Car) {
         CarRetriever.SetCarStorage(car, !car.IsCollected());
         this.props.list.refreshInfo();
-        console.log("info");
+    }
+
+    public GetBackgroundColor() : string {
+        const car = this.props.car;
+        const collections = this.props.list.props.collections;
+        const carCollection = car.findCollection(collections);
+        return carCollection == null ? "#FFF" : carCollection.color;
     }
 
     render() {
+        const divStyle = {
+            "backgroundColor": this.GetBackgroundColor(),
+            "color": "#EEE"
+        };
         return <div className="col-sm-4">
-            <div className="card">
+            <div className="card" style={divStyle}>
                 <div className="card-block">
                     <h3 className="card-title">{this.props.car.getNameCapitalized()}</h3>
                     <p className="card-text">Plate: {this.props.car.getPlateCapitalized()}</p>

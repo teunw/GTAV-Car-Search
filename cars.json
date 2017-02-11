@@ -1,7 +1,59 @@
 {
+  "collections": [
+    {
+      "name": "Jay Norris",
+      "cars": ["X80 PROTO", "T20", "OSIRIS"],
+      "color": "#673AB7"
+    },
+    {
+      "name": "Birds of paradise collector: Curtis Cray Esq",
+      "cars": ["CHEETAH", "TYRUS", "FMJ", "ENTITY XF"],
+      "color": "#3F51B5"
+    },
+    {
+      "name": "Fading Power Collector: Keith Collins MD",
+      "cars": ["COQUETTE BLACKFIN", "NIGHTSHADE"],
+      "color": "#2196F3"
+    },
+    {
+      "name": "No Direct Sunlight Collector: DJ Playlist",
+      "cars": ["FELTZER", "811", "BESTIA GTS"],
+      "color": "#4CAF50"
+    },
+    {
+      "name": "Stay Declasse Collector: MS. M Schultz",
+      "cars": ["SABRE TURBO CUSTOM", "TAMPA", "MAMBA"],
+      "color": "#FF5722"
+    },
+    {
+      "name": "Molten Metal Collector: Ronnie Bonelli",
+      "cars": ["ALPHA", "REAPER", "MASSACRO", "ZENTORNO"],
+      "color": "#795548"
+    },
+    {
+      "name": "Pastel Perfection Collector: Cloe Parker",
+      "cars": ["COQUETTE CLASSIC", "VERLIERER", "ETR1"],
+      "color": "#F44336"
+    },
+    {
+      "name": "Hip to be Square Collector: Tao Cheng",
+      "cars": ["OMNIS", "TROPOS RALLYE", "JESTER", "SULTAN RS"],
+      "color": "#E91E63"
+    },
+    {
+      "name": "Cris Formage",
+      "cars": ["BANSHEE 900R", "STIRLING GT", "SEVEN-70", "TURISMO R"],
+      "color": "#9C27B0"
+    },
+    {
+      "name": "End of the Empires Collector: The Sultan of Amir",
+      "cars": ["Z-TYPE", "ROOSEVELT VALOR"],
+      "color": "#FF9E80"
+    }
+  ],
   "cars": [
     {
-      "name": "X80",
+      "name": "X80 PROTO",
       "plate": "M4K3BANK"
     },
     {
@@ -29,7 +81,7 @@
       "plate": "OVERFLOD"
     },
     {
-      "name": "BLACK FINISH",
+      "name": "COQUETTE BLACKFIN",
       "plate": "VINTAGE"
     },
     {
@@ -45,7 +97,7 @@
       "plate": "SLICK"
     },
     {
-      "name": "BESTIA",
+      "name": "BESTIA GTS",
       "plate": "BEASTY"
     },
     {
@@ -121,7 +173,7 @@
       "plate": "TPD4WG"
     },
     {
-      "name": "ZTYPE",
+      "name": "Z-TYPE",
       "plate": "BIG MONEY"
     },
     {
