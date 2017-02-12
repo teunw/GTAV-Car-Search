@@ -1,9 +1,8 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
-import * as $ from "jquery";
-import {CarRetriever, Collection, RefreshListener} from "./Classes";
-import FormEvent = React.FormEvent;
-import {CollectionComponent} from "./CollectionComponent";
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import * as $ from 'jquery';
+import {CarRetriever, Collection, RefreshListener} from './Classes';
+import {CollectionComponent} from './CollectionComponent';
 
 export class CarCargoMakerState {
     public collections: Collection[] = [];
@@ -43,9 +42,9 @@ export class CargoMarker extends React.Component<{}, CarCargoMakerState> impleme
         const notCollectedCars = this.state.collections.filter((collection) => !collection.IsCompletelyCollected() && collection.Search(this.state.search));
         const collectedCars = this.state.collections.filter((collection) => collection.IsPartlyCollected() && collection.Search(this.state.search));
 
-        const notCollected = notCollectedCars.map((nc) => <CollectionComponent key={"list_nc_" + nc.name} showCollected={false}
+        const notCollected = notCollectedCars.map((nc) => <CollectionComponent key={"list" + nc.name} showCollected={false}
                                                                                collection={nc}/>);
-        const collected = collectedCars.map((c) => <CollectionComponent key={"list_c_" + c.name} showCollected={true}
+        const collected = collectedCars.map((c) => <CollectionComponent key={"list" + c.name} showCollected={true}
                                                                         collection={c}/>);
 
         return (

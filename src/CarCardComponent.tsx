@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Car, CarRetriever} from "./Classes";
+import {Car, CarRetriever} from './Classes';
 export class  CarCardProps {
     car: Car;
 }
