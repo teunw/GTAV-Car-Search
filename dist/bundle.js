@@ -189,12 +189,16 @@ var CollectionComponent = (function (_super) {
     function CollectionComponent() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.RowLength = 3;
+        _this.NotCollectedColor = "#FFEBEE";
+        _this.CollectedColor = "#E8F5E9";
         return _this;
     }
     CollectionComponent.prototype.render = function () {
         var _this = this;
         var collection = this.props.collection;
-        var carCards = collection.cars.filter(function (c) { return c.IsCollected() == _this.props.showCollected; }).map(function (c) { return React.createElement(CarCardComponent_1.CarCard, { key: c.createKey(), car: c }); });
+        var carCards = collection.cars
+            .filter(function (c) { return c.IsCollected() == _this.props.showCollected; })
+            .map(function (c) { return React.createElement(CarCardComponent_1.CarCard, { key: c.createKey(), car: c, backgroundColor: c.IsCollected() ? _this.CollectedColor : _this.NotCollectedColor }); });
         var rows = [];
         for (var i = 0; i < carCards.length; i += this.RowLength) {
             var element = React.createElement("div", { key: collection.name + i, className: "row" },
@@ -252,8 +256,11 @@ var CarCard = (function (_super) {
     };
     CarCard.prototype.render = function () {
         var _this = this;
+        var style = {
+            "backgroundColor": this.props.backgroundColor
+        };
         return React.createElement("div", { className: "col-sm-4" },
-            React.createElement("div", { className: "card" },
+            React.createElement("div", { className: "card", style: style },
                 React.createElement("div", { className: "card-block" },
                     React.createElement("h3", { className: "card-title" }, this.props.car.getNameCapitalized()),
                     React.createElement("p", { className: "card-text" },
