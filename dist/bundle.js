@@ -92,8 +92,8 @@
 	        }
 	        var notCollectedCars = this.state.collections.filter(function (collection) { return !collection.IsCompletelyCollected() && collection.Search(_this.state.search); });
 	        var collectedCars = this.state.collections.filter(function (collection) { return collection.IsPartlyCollected() && collection.Search(_this.state.search); });
-	        var notCollected = notCollectedCars.map(function (nc) { return React.createElement(CollectionComponent_1.CollectionComponent, { key: nc.name, showCollected: false, collection: nc }); });
-	        var collected = collectedCars.map(function (c) { return React.createElement(CollectionComponent_1.CollectionComponent, { key: c.name, showCollected: true, collection: c }); });
+	        var notCollected = notCollectedCars.map(function (nc) { return React.createElement(CollectionComponent_1.CollectionComponent, { key: "list_nc_" + nc.name, showCollected: false, collection: nc }); });
+	        var collected = collectedCars.map(function (c) { return React.createElement(CollectionComponent_1.CollectionComponent, { key: "list_c_" + c.name, showCollected: true, collection: c }); });
 	        return (React.createElement("div", { id: "list" },
 	            React.createElement("input", { type: "text", className: "form-control", placeholder: "Search", value: this.state.search, onChange: this.handleSearch }),
 	            React.createElement("h2", null, "Not collected cars"),
@@ -243,7 +243,7 @@
 	        var carCards = collection.cars.filter(function (c) { return c.IsCollected() == _this.props.showCollected; }).map(function (c) { return React.createElement(CarCardComponent_1.CarCard, { key: c.createKey(), car: c, color: collection.color }); });
 	        var rows = [];
 	        for (var i = 0; i < carCards.length; i += this.RowLength) {
-	            var element = React.createElement("div", { key: collection.name, className: "row" },
+	            var element = React.createElement("div", { key: collection.name + i, className: "row" },
 	                carCards[i],
 	                carCards[i + 1],
 	                carCards[i + 2]);
