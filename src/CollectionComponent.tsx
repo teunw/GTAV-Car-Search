@@ -13,7 +13,7 @@ export class CollectionComponent extends React.Component<CollectionComponentProp
 
     render() {
         const collection = this.props.collection;
-        const carCards = collection.cars.filter((c) => c.IsCollected() == this.props.showCollected).map((c) => <CarCard key={c.createKey()} car={c} color={collection.color}/>);
+        const carCards = collection.cars.filter((c) => c.IsCollected() == this.props.showCollected).map((c) => <CarCard key={c.createKey()} car={c} />);
         const rows = [];
         for (let i = 0; i < carCards.length; i += this.RowLength) {
             const element = <div key={collection.name + i} className="row">{carCards[i]}{carCards[i + 1]}{carCards[i + 2]}</div>;

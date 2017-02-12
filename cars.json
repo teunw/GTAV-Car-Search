@@ -15,8 +15,7 @@
           "name": "OSIRIS",
           "plate": "SLEEK"
         }
-      ],
-      "color": "#673AB7"
+      ]
     },
     {
       "name": "Birds of paradise collector: Curtis Cray Esq",
@@ -37,8 +36,7 @@
           "name": "ENTITY XF",
           "plate": "OVERFLOD"
         }
-      ],
-      "color": "#3F51B5"
+      ]
     },
     {
       "name": "Fading Power Collector: Keith Collins MD",
@@ -51,8 +49,7 @@
           "name": "NIGHTSHADE",
           "plate": "TH370S"
         }
-      ],
-      "color": "#2196F3"
+      ]
     },
     {
       "name": "No Direct Sunlight Collector: DJ Playlist",
@@ -69,8 +66,7 @@
           "name": "BESTIA GTS",
           "plate": "BEASTY"
         }
-      ],
-      "color": "#4CAF50"
+      ]
     },
     {
       "name": "Stay Declasse Collector: MS. M Schultz",
@@ -87,8 +83,7 @@
           "name": "MAMBA",
           "plate": "BLACKMAMBA"
         }
-      ],
-      "color": "#FF5722"
+      ]
     },
     {
       "name": "Molten Metal Collector: Ronnie Bonelli",
@@ -109,8 +104,7 @@
           "name": "ZENTORNO",
           "plate": "WINNING"
         }
-      ],
-      "color": "#795548"
+      ]
     },
     {
       "name": "Pastel Perfection Collector: Cloe Parker",
@@ -127,8 +121,7 @@
           "name": "ETR1",
           "plate": "PRETTY"
         }
-      ],
-      "color": "#F44336"
+      ]
     },
     {
       "name": "Hip to be Square Collector: Tao Cheng",
@@ -149,8 +142,7 @@
           "name": "SULTAN RS",
           "plate": "SNOWFLKE"
         }
-      ],
-      "color": "#E91E63"
+      ]
     },
     {
       "name": "Cris Formage",
@@ -171,8 +163,7 @@
           "name": "TURISMO R",
           "plate": "TPD4WG"
         }
-      ],
-      "color": "#9C27B0"
+      ]
     },
     {
       "name": "End of the Empires Collector: The Sultan of Amir",
@@ -185,138 +176,7 @@
           "name": "ROOSEVELT VALOR",
           "plate": "OLD TIMER"
         }
-      ],
-      "color": "#FF9E80"
-    }
-  ],
-  "cars": [
-    {
-      "name": "X80 PROTO",
-      "plate": "M4K3BANK"
-    },
-    {
-      "name": "T20",
-      "plate": "DEVIL"
-    },
-    {
-      "name": "OSIRIS",
-      "plate": "SLEEK"
-    },
-    {
-      "name": "CHEETAH",
-      "plate": "BUZZED"
-    },
-    {
-      "name": "TYRUS",
-      "plate": "CITRUS"
-    },
-    {
-      "name": "FMJ",
-      "plate": "CATCHME"
-    },
-    {
-      "name": "ENTITY XF",
-      "plate": "OVERFLOD"
-    },
-    {
-      "name": "COQUETTE BLACKFIN",
-      "plate": "VINTAGE"
-    },
-    {
-      "name": "NIGHTSHADE",
-      "plate": "TH370S"
-    },
-    {
-      "name": "FELTZER",
-      "plate": "POWERFUL"
-    },
-    {
-      "name": "811",
-      "plate": "SLICK"
-    },
-    {
-      "name": "BESTIA GTS",
-      "plate": "BEASTY"
-    },
-    {
-      "name": "SABRE TURBO CUSTOM",
-      "plate": "BOUNCE"
-    },
-    {
-      "name": "TAMPA",
-      "plate": "CHARGED"
-    },
-    {
-      "name": "MAMBA",
-      "plate": "BLACKMAMBA"
-    },
-    {
-      "name": "ALPHA",
-      "plate": "VISIONARY"
-    },
-    {
-      "name": "REAPER",
-      "plate": "DEATH4U"
-    },
-    {
-      "name": "MASSACRO",
-      "plate": "BOSS"
-    },
-    {
-      "name": "ZENTORNO",
-      "plate": "WINNING"
-    },
-    {
-      "name": "COQUETTE CLASSIC",
-      "plate": "TOPLESS"
-    },
-    {
-      "name": "VERLIERER",
-      "plate": "PRECIOUS"
-    },
-    {
-      "name": "ETR1",
-      "plate": "PRETTY"
-    },
-    {
-      "name": "OMNIS",
-      "plate": "WIDEBOD"
-    },
-    {
-      "name": "TROPOS RALLYE",
-      "plate": "1985"
-    },
-    {
-      "name": "JESTER",
-      "plate": "NOFOOL"
-    },
-    {
-      "name": "SULTAN RS",
-      "plate": "SNOWFLKE"
-    },
-    {
-      "name": "BANSHEE 900R",
-      "plate": "DRIFTER"
-    },
-    {
-      "name": "STIRLING GT",
-      "plate": "RALLY"
-    },
-    {
-      "name": "SEVEN-70",
-      "plate": "ALLOY5"
-    },
-    {
-      "name": "TURISMO R",
-      "plate": "TPD4WG"
-    },
-    {
-      "name": "Z-TYPE",
-      "plate": "BIG MONEY"
-    },
-    {
-      "name": "ROOSEVELT VALOR",
-      "plate": "OLD TIMER"
+      ]
     }
   ]
 }

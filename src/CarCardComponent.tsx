@@ -2,8 +2,6 @@ import * as React from "react";
 import {Car, CarRetriever} from "./Classes";
 export class  CarCardProps {
     car: Car;
-    color : string = "#222";
-    textColor? : string = "#EEE";
 }
 
 export class CarCard extends React.Component<CarCardProps, {}> {
@@ -20,12 +18,8 @@ export class CarCard extends React.Component<CarCardProps, {}> {
     }
 
     render() {
-        const divStyle = {
-            backgroundColor: this.props.color,
-            color: "#EEE"
-        };
         return <div className="col-sm-4">
-            <div className="card" style={divStyle}>
+            <div className="card">
                 <div className="card-block">
                     <h3 className="card-title">{this.props.car.getNameCapitalized()}</h3>
                     <p className="card-text">Plate: {this.props.car.getPlateCapitalized()}</p>
