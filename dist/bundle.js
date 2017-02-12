@@ -53,10 +53,9 @@
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(2);
 	var Classes_1 = __webpack_require__(3);
-	var CarListComponent_1 = __webpack_require__(4);
+	var CollectionComponent_1 = __webpack_require__(4);
 	var CarCargoMakerState = (function () {
 	    function CarCargoMakerState() {
-	        this.cars = [];
 	        this.collections = [];
 	        this.search = "";
 	    }
@@ -69,8 +68,14 @@
 	        var _this = _super.call(this, props, context) || this;
 	        _this.state = new CarCargoMakerState();
 	        _this.handleSearch = _this.handleSearch.bind(_this);
+	        Classes_1.CarRetriever.AddRefreshListener(_this);
 	        return _this;
 	    }
+	    CargoMarker.prototype.onRefresh = function (collections) {
+	        this.setState({
+	            collections: collections
+	        });
+	    };
 	    CargoMarker.prototype.handleSearch = function (e) {
 	        this.setState({
 	            search: e.target.value
@@ -78,13 +83,6 @@
 	    };
 	    CargoMarker.prototype.render = function () {
 	        var _this = this;
-	        if (this.state.cars.length == 0) {
-	            Classes_1.CarRetriever
-	                .GetCars()
-	                .done(function (retrievedCars) {
-	                _this.setState({ cars: retrievedCars });
-	            });
-	        }
 	        if (this.state.collections.length == 0) {
 	            Classes_1.CarRetriever
 	                .GetCollections()
@@ -92,10 +90,10 @@
 	                _this.setState({ collections: collections });
 	            });
 	        }
-	        var notCollectedCars = this.state.cars.filter(function (car) { return !car.IsCollected() && car.Search(_this.state.search); });
-	        var collectedCars = this.state.cars.filter(function (car) { return car.IsCollected() && car.Search(_this.state.search); });
-	        var notCollected = React.createElement(CarListComponent_1.CarListComponent, { key: "notCollected", cars: notCollectedCars, collections: this.state.collections, cargoMarker: this });
-	        var collected = React.createElement(CarListComponent_1.CarListComponent, { key: "collected", cars: collectedCars, collections: this.state.collections, cargoMarker: this });
+	        var notCollectedCars = this.state.collections.filter(function (collection) { return !collection.IsCompletelyCollected() && collection.Search(_this.state.search); });
+	        var collectedCars = this.state.collections.filter(function (collection) { return collection.IsPartlyCollected() && collection.Search(_this.state.search); });
+	        var notCollected = notCollectedCars.map(function (nc) { return React.createElement(CollectionComponent_1.CollectionComponent, { key: nc.name, showCollected: false, collection: nc }); });
+	        var collected = collectedCars.map(function (c) { return React.createElement(CollectionComponent_1.CollectionComponent, { key: c.name, showCollected: true, collection: c }); });
 	        return (React.createElement("div", { id: "list" },
 	            React.createElement("input", { type: "text", className: "form-control", placeholder: "Search", value: this.state.search, onChange: this.handleSearch }),
 	            React.createElement("h2", null, "Not collected cars"),
@@ -152,45 +150,48 @@
 	    Car.prototype.createKey = function () {
 	        return this.name + this.plate;
 	    };
-	    Car.prototype.findCollection = function (collection) {
-	        var _this = this;
-	        var foundCollection = null;
-	        collection.forEach(function (collection) {
-	            var index = collection.cars.indexOf(_this.name.toUpperCase());
-	            if (index != -1) {
-	                foundCollection = collection;
-	                console.log(foundCollection);
-	            }
-	        });
-	        return foundCollection;
-	    };
 	    return Car;
 	}());
 	exports.Car = Car;
 	var Collection = (function () {
 	    function Collection(name, cars, color) {
 	        this.name = name;
-	        this.cars = cars;
 	        this.color = color;
+	        this.cars = cars.map(this.constructCar);
 	    }
+	    Collection.prototype.IsCompletelyCollected = function () {
+	        return this.cars.every(function (car) { return car.IsCollected(); });
+	    };
+	    Collection.prototype.IsPartlyCollected = function () {
+	        return this.cars.filter(function (c) { return c.IsCollected(); }).length > 0;
+	    };
+	    Collection.prototype.Search = function (query) {
+	        query = query.toLowerCase();
+	        var carSearch = this.cars.filter(function (c) { return c.Search(query); }).length > 0;
+	        var collectionSearch = this.name.toLowerCase().indexOf(query) != -1;
+	        return carSearch || collectionSearch;
+	    };
+	    Collection.prototype.constructCar = function (car) {
+	        return new Car(car.name, car.plate);
+	    };
 	    return Collection;
 	}());
 	exports.Collection = Collection;
 	var CarRetriever = (function () {
 	    function CarRetriever() {
 	    }
-	    CarRetriever.GetCars = function () {
-	        var result = $.Deferred();
-	        var cars = $.get("./cars.json");
-	        cars.then(function (data) {
-	            var parsed = [];
-	            data.cars.forEach(function (car) {
-	                parsed.push(new Car(car.name, car.plate));
-	            });
-	            result.resolve(parsed);
+	    CarRetriever.AddRefreshListener = function (refreshListener) {
+	        this.RefreshListeners.push(refreshListener);
+	    };
+	    CarRetriever.RemoveRefreshListener = function (refreshListener) {
+	        var index = this.RefreshListeners.indexOf(refreshListener);
+	        this.RefreshListeners = this.RefreshListeners.splice(index, 1);
+	    };
+	    CarRetriever.TriggerRefresh = function () {
+	        var _this = this;
+	        this.GetCollections().then(function (c) {
+	            _this.RefreshListeners.forEach(function (r) { return r.onRefresh(c); });
 	        });
-	        cars.fail(function () { return result.reject([]); });
-	        return result.promise();
 	    };
 	    CarRetriever.GetCollections = function () {
 	        var result = $.Deferred();
@@ -213,6 +214,7 @@
 	    };
 	    return CarRetriever;
 	}());
+	CarRetriever.RefreshListeners = [];
 	exports.CarRetriever = CarRetriever;
 
 
@@ -228,37 +230,33 @@
 	};
 	var React = __webpack_require__(1);
 	var CarCardComponent_1 = __webpack_require__(5);
-	var CarListProps = (function () {
-	    function CarListProps() {
+	var CollectionComponent = (function (_super) {
+	    __extends(CollectionComponent, _super);
+	    function CollectionComponent() {
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
+	        _this.RowLength = 3;
+	        return _this;
 	    }
-	    return CarListProps;
-	}());
-	exports.CarListProps = CarListProps;
-	var CarListComponent = (function (_super) {
-	    __extends(CarListComponent, _super);
-	    function CarListComponent() {
-	        return _super !== null && _super.apply(this, arguments) || this;
-	    }
-	    CarListComponent.prototype.refreshInfo = function () {
-	        this.props.cargoMarker.forceUpdate();
-	    };
-	    CarListComponent.prototype.render = function () {
+	    CollectionComponent.prototype.render = function () {
 	        var _this = this;
-	        var mapper = this.props.cars.map(function (car) { return React.createElement(CarCardComponent_1.CarCard, { key: car.createKey(), car: car, list: _this }); });
-	        var elements = [];
-	        for (var i = 0; i <= mapper.length; i += 3) {
-	            var row = React.createElement("div", { className: "row", key: i },
-	                mapper[i],
-	                mapper[i + 1],
-	                mapper[i + 2]);
-	            elements.push(row);
-	            elements.push(React.createElement("hr", null));
+	        var collection = this.props.collection;
+	        var carCards = collection.cars.filter(function (c) { return c.IsCollected() == _this.props.showCollected; }).map(function (c) { return React.createElement(CarCardComponent_1.CarCard, { key: c.createKey(), car: c, color: collection.color }); });
+	        var rows = [];
+	        for (var i = 0; i < carCards.length; i += this.RowLength) {
+	            var element = React.createElement("div", { key: collection.name, className: "row" },
+	                carCards[i],
+	                carCards[i + 1],
+	                carCards[i + 2]);
+	            rows.push(element);
 	        }
-	        return React.createElement("div", { id: "list" }, elements);
+	        return (React.createElement("div", { id: collection.name },
+	            React.createElement("h3", null, collection.name),
+	            rows,
+	            React.createElement("hr", null)));
 	    };
-	    return CarListComponent;
+	    return CollectionComponent;
 	}(React.Component));
-	exports.CarListComponent = CarListComponent;
+	exports.CollectionComponent = CollectionComponent;
 
 
 /***/ },
@@ -275,6 +273,8 @@
 	var Classes_1 = __webpack_require__(3);
 	var CarCardProps = (function () {
 	    function CarCardProps() {
+	        this.color = "#222";
+	        this.textColor = "#EEE";
 	    }
 	    return CarCardProps;
 	}());
@@ -283,24 +283,19 @@
 	    __extends(CarCard, _super);
 	    function CarCard(props, context) {
 	        var _this = _super.call(this, props, context) || this;
-	        _this.Mark = _this.Mark.bind(_this);
+	        _this.onButtonClicked = _this.onButtonClicked.bind(_this);
 	        return _this;
 	    }
-	    CarCard.prototype.Mark = function (car) {
-	        Classes_1.CarRetriever.SetCarStorage(car, !car.IsCollected());
-	        this.props.list.refreshInfo();
-	    };
-	    CarCard.prototype.GetBackgroundColor = function () {
+	    CarCard.prototype.onButtonClicked = function () {
 	        var car = this.props.car;
-	        var collections = this.props.list.props.collections;
-	        var carCollection = car.findCollection(collections);
-	        return carCollection == null ? "#FFF" : carCollection.color;
+	        car.SetCollected(!car.IsCollected());
+	        Classes_1.CarRetriever.TriggerRefresh();
 	    };
 	    CarCard.prototype.render = function () {
 	        var _this = this;
 	        var divStyle = {
-	            "backgroundColor": this.GetBackgroundColor(),
-	            "color": "#EEE"
+	            backgroundColor: this.props.color,
+	            color: "#EEE"
 	        };
 	        return React.createElement("div", { className: "col-sm-4" },
 	            React.createElement("div", { className: "card", style: divStyle },
@@ -309,7 +304,7 @@
 	                    React.createElement("p", { className: "card-text" },
 	                        "Plate: ",
 	                        this.props.car.getPlateCapitalized()),
-	                    React.createElement("button", { className: "btn btn-primary", onClick: function () { return _this.Mark(_this.props.car); } }, this.props.car.IsCollected() ? "Put back" : "Mark collected"))));
+	                    React.createElement("button", { className: "btn btn-primary", onClick: function () { return _this.onButtonClicked(); } }, this.props.car.IsCollected() ? "Put back" : "Mark collected"))));
 	    };
 	    return CarCard;
 	}(React.Component));

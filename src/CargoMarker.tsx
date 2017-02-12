@@ -1,38 +1,37 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as $ from "jquery";
-import {Car, CarRetriever, Collection} from "./Classes";
-import {CarListComponent} from "./CarListComponent";
+import {CarRetriever, Collection, RefreshListener} from "./Classes";
 import FormEvent = React.FormEvent;
+import {CollectionComponent} from "./CollectionComponent";
 
 export class CarCargoMakerState {
-    public cars: Car[] = [];
-    public collections : Collection[] = [];
-    public search : string = "";
+    public collections: Collection[] = [];
+    public search: string = "";
 }
 
-export class CargoMarker extends React.Component<{}, CarCargoMakerState> {
+export class CargoMarker extends React.Component<{}, CarCargoMakerState> implements RefreshListener {
 
     constructor(props: {}, context: any) {
         super(props, context);
         this.state = new CarCargoMakerState();
         this.handleSearch = this.handleSearch.bind(this);
+        CarRetriever.AddRefreshListener(this);
     }
 
-    public handleSearch(e:any) {
+    onRefresh(collections: Collection[]): void {
+        this.setState({
+            collections: collections
+        });
+    }
+
+    public handleSearch(e: any) {
         this.setState({
             search: e.target.value
         });
     }
 
     render() {
-        if (this.state.cars.length == 0) {
-            CarRetriever
-                .GetCars()
-                .done((retrievedCars: Car[]) => {
-                    this.setState({cars: retrievedCars});
-                });
-        }
         if (this.state.collections.length == 0) {
             CarRetriever
                 .GetCollections()
@@ -41,15 +40,18 @@ export class CargoMarker extends React.Component<{}, CarCargoMakerState> {
                 });
         }
 
-        const notCollectedCars = this.state.cars.filter((car: Car) => !car.IsCollected() && car.Search(this.state.search));
-        const collectedCars = this.state.cars.filter((car: Car) => car.IsCollected() && car.Search(this.state.search));
+        const notCollectedCars = this.state.collections.filter((collection) => !collection.IsCompletelyCollected() && collection.Search(this.state.search));
+        const collectedCars = this.state.collections.filter((collection) => collection.IsPartlyCollected() && collection.Search(this.state.search));
 
-        const notCollected = <CarListComponent key="notCollected" cars={notCollectedCars} collections={this.state.collections} cargoMarker={this} />;
-        const collected = <CarListComponent key="collected" cars={collectedCars} collections={this.state.collections} cargoMarker={this} />;
+        const notCollected = notCollectedCars.map((nc) => <CollectionComponent key={nc.name} showCollected={false}
+                                                                               collection={nc}/>);
+        const collected = collectedCars.map((c) => <CollectionComponent key={c.name} showCollected={true}
+                                                                        collection={c}/>);
 
         return (
             <div id="list">
-                <input type="text" className="form-control" placeholder="Search" value={this.state.search} onChange={this.handleSearch}/>
+                <input type="text" className="form-control" placeholder="Search" value={this.state.search}
+                       onChange={this.handleSearch}/>
                 <h2>Not collected cars</h2>
                 {notCollected}
                 <hr/>

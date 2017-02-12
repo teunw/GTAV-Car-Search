@@ -14,7 +14,7 @@ export class CarListComponent extends React.Component<CarListProps, {}> {
     }
 
     render() {
-        let mapper = this.props.cars.map((car: Car) => <CarCard key={car.createKey()} car={car} list={this} />);
+        let mapper = this.props.cars.map((car: Car) => <CarCard key={car.createKey()} car={car} color={"#FFF"} onMarkedCollected={null} />);
         let elements = [];
         for (let i = 0; i <= mapper.length; i += 3) {
             const row = <div className="row" key={i}>{mapper[i]}{mapper[i + 1]}{mapper[i + 2]}</div>;
