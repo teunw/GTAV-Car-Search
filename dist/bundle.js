@@ -98,7 +98,21 @@ var Car = (function () {
     Car.prototype.Search = function (query) {
         if (query.trim() == "")
             return true;
-        return this.name.toLowerCase().indexOf(query.toLowerCase()) != -1 || this.plate.toLowerCase().indexOf(query.toLowerCase()) != -1;
+        var removel33tspelling = query
+            .replace("4", "a")
+            .replace("3", "e")
+            .replace("6", "g")
+            .replace("9", "j")
+            .replace("1", "l")
+            .replace("0", "o")
+            .replace("0", "q")
+            .replace("5", "s")
+            .replace("7", "t")
+            .replace("2", "z");
+        var l33tSearch = this.plate.toLowerCase().indexOf(removel33tspelling) != -1;
+        var nameSearch = this.name.toLowerCase().indexOf(query.toLowerCase()) != -1;
+        var plateSearch = this.plate.toLowerCase().indexOf(query.toLowerCase()) != -1;
+        return l33tSearch || nameSearch || plateSearch;
     };
     Car.prototype.createKey = function () {
         return this.name + this.plate;
@@ -110,13 +124,19 @@ var Collection = (function () {
     function Collection(name, cars, color) {
         this.name = name;
         this.color = color;
-        this.cars = cars.map(this.constructCar);
+        this.cars = cars.map(Collection.constructCar);
     }
     Collection.prototype.IsCompletelyCollected = function () {
         return this.cars.every(function (car) { return car.IsCollected(); });
     };
     Collection.prototype.IsPartlyCollected = function () {
-        return this.cars.filter(function (c) { return c.IsCollected(); }).length > 0;
+        return this.GetAmountCollected() > 0;
+    };
+    Collection.prototype.GetAmountCollected = function () {
+        return this.cars.filter(function (c) { return c.IsCollected(); }).length;
+    };
+    Collection.prototype.GetTotalCars = function () {
+        return this.cars.length;
     };
     Collection.prototype.Search = function (query) {
         query = query.toLowerCase();
@@ -124,7 +144,7 @@ var Collection = (function () {
         var collectionSearch = this.name.toLowerCase().indexOf(query) != -1;
         return carSearch || collectionSearch;
     };
-    Collection.prototype.constructCar = function (car) {
+    Collection.constructCar = function (car) {
         return new Car(car.name, car.plate);
     };
     return Collection;
@@ -207,9 +227,15 @@ var CollectionComponent = (function (_super) {
                 carCards[i + 2]);
             rows.push(element);
         }
-        return (React.createElement("div", { id: collection.name },
+        return (React.createElement("div", { id: collection.name, className: "" },
             React.createElement("h3", null, collection.name),
             rows,
+            React.createElement("br", null),
+            React.createElement("h5", null,
+                collection.GetAmountCollected(),
+                " / ",
+                collection.GetTotalCars(),
+                " collected"),
             React.createElement("hr", null)));
     };
     return CollectionComponent;
@@ -288,6 +314,7 @@ var React = __webpack_require__(0);
 var ReactDOM = __webpack_require__(3);
 var Classes_1 = __webpack_require__(1);
 var CollectionComponent_1 = __webpack_require__(2);
+var NavbarComponent_1 = __webpack_require__(6);
 var CarCargoMakerState = (function () {
     function CarCargoMakerState() {
         this.collections = [];
@@ -329,17 +356,44 @@ var CargoMarker = (function (_super) {
         var notCollected = notCollectedCars.map(function (nc) { return React.createElement(CollectionComponent_1.CollectionComponent, { key: "list" + nc.name, showCollected: false, collection: nc }); });
         var collected = collectedCars.map(function (c) { return React.createElement(CollectionComponent_1.CollectionComponent, { key: "list" + c.name, showCollected: true, collection: c }); });
         return (React.createElement("div", { id: "list" },
-            React.createElement("input", { type: "text", className: "form-control", placeholder: "Search", value: this.state.search, onChange: this.handleSearch }),
-            React.createElement("h2", null, "Not collected cars"),
-            notCollected,
-            React.createElement("hr", null),
-            React.createElement("h2", null, "Collected"),
-            collected));
+            React.createElement(NavbarComponent_1.NavbarComponent, { handleSearch: this.handleSearch }),
+            React.createElement("div", { className: "card" },
+                React.createElement("h3", { className: "card-header text-danger" }, "Not Collected"),
+                React.createElement("div", { className: "card-block" }, notCollected)),
+            React.createElement("br", null),
+            React.createElement("div", { className: "card" },
+                React.createElement("h3", { className: "card-header" }, "Collected"),
+                React.createElement("div", { className: "card-block" }, collected))));
     };
     return CargoMarker;
 }(React.Component));
 exports.CargoMarker = CargoMarker;
 ReactDOM.render(React.createElement(CargoMarker, null), document.getElementById("content"));
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var React = __webpack_require__(0);
+var NavbarComponent = (function (_super) {
+    __extends(NavbarComponent, _super);
+    function NavbarComponent() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    NavbarComponent.prototype.render = function () {
+        return React.createElement("input", { className: "form-control mr-sm-2", type: "text", placeholder: "Search", onChange: this.props.handleSearch });
+    };
+    return NavbarComponent;
+}(React.Component));
+exports.NavbarComponent = NavbarComponent;
 
 
 /***/ })

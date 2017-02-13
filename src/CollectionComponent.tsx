@@ -4,7 +4,7 @@ import {CarCard} from "./CarCardComponent";
 
 export interface CollectionComponentProps {
     collection: Collection;
-    showCollected? : boolean;
+    showCollected?: boolean;
 }
 
 export class CollectionComponent extends React.Component<CollectionComponentProps, {}> {
@@ -17,14 +17,22 @@ export class CollectionComponent extends React.Component<CollectionComponentProp
         const collection = this.props.collection;
         const carCards = collection.cars
             .filter(c => c.IsCollected() == this.props.showCollected)
-            .map((c) => <CarCard key={c.createKey()} car={c} backgroundColor={c.IsCollected() ? this.CollectedColor : this.NotCollectedColor} />);
+            .map((c) => <CarCard key={c.createKey()} car={c}
+                                 backgroundColor={c.IsCollected() ? this.CollectedColor : this.NotCollectedColor}/>);
         const rows = [];
         for (let i = 0; i < carCards.length; i += this.RowLength) {
-            const element = <div key={collection.name + i} className="row">{carCards[i]}{carCards[i + 1]}{carCards[i + 2]}</div>;
+            const element = <div key={collection.name + i}
+                                 className="row">{carCards[i]}{carCards[i + 1]}{carCards[i + 2]}</div>;
             rows.push(element);
         }
 
-        return (<div id={collection.name}><h3>{collection.name}</h3>{rows}<hr/></div>);
+        return (<div id={collection.name} className="">
+            <h3>{collection.name}</h3>
+            {rows}
+            <br/>
+            <h5>{collection.GetAmountCollected()} / {collection.GetTotalCars()} collected</h5>
+            <hr/>
+        </div>);
     }
 
 }

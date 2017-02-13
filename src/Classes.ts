@@ -15,7 +15,7 @@ export class Car implements ICar {
         return CarRetriever.GetCarStorage(this);
     }
 
-    public SetCollected(collected:boolean) {
+    public SetCollected(collected: boolean) {
         CarRetriever.SetCarStorage(this, collected);
     }
 
@@ -27,9 +27,25 @@ export class Car implements ICar {
         return this.plate.slice(0, 1).toUpperCase() + this.plate.slice(1).toLowerCase();
     }
 
-    public Search(query:string) : boolean {
+    public Search(query: string): boolean {
         if (query.trim() == "") return true;
-        return this.name.toLowerCase().indexOf(query.toLowerCase()) != -1 || this.plate.toLowerCase().indexOf(query.toLowerCase()) != -1;
+
+        let removel33tspelling = query
+            .replace("4", "a")
+            .replace("3", "e")
+            .replace("6", "g")
+            .replace("9", "j")
+            .replace("1", "l")
+            .replace("0", "o")
+            .replace("0", "q")
+            .replace("5", "s")
+            .replace("7", "t")
+            .replace("2", "z");
+        let l33tSearch = this.plate.toLowerCase().indexOf(removel33tspelling) != -1;
+        let nameSearch = this.name.toLowerCase().indexOf(query.toLowerCase()) != -1;
+        let plateSearch = this.plate.toLowerCase().indexOf(query.toLowerCase()) != -1;
+
+        return l33tSearch || nameSearch || plateSearch;
     }
 
     public createKey() {
@@ -39,25 +55,33 @@ export class Car implements ICar {
 
 export class Collection {
 
-    public name : string;
-    public cars : Car[];
-    public color : string;
+    public name: string;
+    public cars: Car[];
+    public color: string;
 
     constructor(name: string, cars: ICar[], color: string) {
         this.name = name;
         this.color = color;
-        this.cars = cars.map(this.constructCar);
+        this.cars = cars.map(Collection.constructCar);
     }
 
-    public IsCompletelyCollected() : boolean {
+    public IsCompletelyCollected(): boolean {
         return this.cars.every((car) => car.IsCollected());
     }
 
-    public IsPartlyCollected() : boolean {
-        return this.cars.filter((c) => c.IsCollected()).length > 0;
+    public IsPartlyCollected(): boolean {
+        return this.GetAmountCollected() > 0;
     }
 
-    public Search(query:string) : boolean {
+    public GetAmountCollected() {
+        return this.cars.filter((c) => c.IsCollected()).length
+    }
+
+    public GetTotalCars() {
+        return this.cars.length;
+    }
+
+    public Search(query: string): boolean {
         query = query.toLowerCase();
         let carSearch = this.cars.filter((c) => c.Search(query)).length > 0;
         let collectionSearch = this.name.toLowerCase().indexOf(query) != -1;
@@ -65,24 +89,24 @@ export class Collection {
         return carSearch || collectionSearch;
     }
 
-    private constructCar(car:ICar) : Car {
+    private static constructCar(car: ICar): Car {
         return new Car(car.name, car.plate);
     }
 }
 
 export interface RefreshListener {
-    onRefresh(collections : Collection[]) : void;
+    onRefresh(collections: Collection[]): void;
 }
 
 export class CarRetriever {
 
-    private static RefreshListeners : RefreshListener[] = [];
+    private static RefreshListeners: RefreshListener[] = [];
 
-    static AddRefreshListener(refreshListener : RefreshListener) {
+    static AddRefreshListener(refreshListener: RefreshListener) {
         this.RefreshListeners.push(refreshListener);
     }
 
-    static RemoveRefreshListener(refreshListener : RefreshListener) {
+    static RemoveRefreshListener(refreshListener: RefreshListener) {
         const index = this.RefreshListeners.indexOf(refreshListener);
         this.RefreshListeners = this.RefreshListeners.splice(index, 1);
     }
@@ -93,7 +117,7 @@ export class CarRetriever {
         });
     }
 
-    static GetCollections() : JQueryPromise<Collection[]> {
+    static GetCollections(): JQueryPromise<Collection[]> {
         const result = $.Deferred<Collection[]>();
         const cars = $.get("./cars.json");
         cars.then((data: any) => {
@@ -108,11 +132,11 @@ export class CarRetriever {
         return result.promise();
     }
 
-    static GetCarStorage(cars:Car) : boolean {
+    static GetCarStorage(cars: Car): boolean {
         return localStorage.getItem(cars.createKey()) == "true";
     }
 
-    static SetCarStorage(car:Car, bool:boolean) {
+    static SetCarStorage(car: Car, bool: boolean) {
         localStorage.setItem(car.createKey(), String(bool));
     }
 }
