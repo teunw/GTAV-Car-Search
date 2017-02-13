@@ -81,6 +81,15 @@ export class Collection {
         return this.cars.length;
     }
 
+    public GetBonus() {
+        return 20000 + (15000 * (this.GetTotalCars() - 2));
+    }
+
+    public GetBonusText() {
+        const bonus = this.GetBonus().toString();
+        return `${bonus.slice(0, 2)}.${bonus.slice(2, 9999)}`;
+    }
+
     public Search(query: string): boolean {
         query = query.toLowerCase();
         let carSearch = this.cars.filter((c) => c.Search(query)).length > 0;

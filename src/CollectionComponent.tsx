@@ -31,6 +31,7 @@ export class CollectionComponent extends React.Component<CollectionComponentProp
             {rows}
             <br/>
             <h5>{collection.GetAmountCollected()} / {collection.GetTotalCars()} collected</h5>
+            <h5>${collection.GetBonusText()} bonus</h5>
             <hr/>
         </div>);
     }

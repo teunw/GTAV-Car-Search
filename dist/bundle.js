@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 5);
+/******/ 	return __webpack_require__(__webpack_require__.s = 6);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -138,6 +138,13 @@ var Collection = (function () {
     Collection.prototype.GetTotalCars = function () {
         return this.cars.length;
     };
+    Collection.prototype.GetBonus = function () {
+        return 20000 + (15000 * (this.GetTotalCars() - 2));
+    };
+    Collection.prototype.GetBonusText = function () {
+        var bonus = this.GetBonus().toString();
+        return bonus.slice(0, 2) + "." + bonus.slice(2, 9999);
+    };
     Collection.prototype.Search = function (query) {
         query = query.toLowerCase();
         var carSearch = this.cars.filter(function (c) { return c.Search(query); }).length > 0;
@@ -203,7 +210,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var React = __webpack_require__(0);
-var CarCardComponent_1 = __webpack_require__(4);
+var CarCardComponent_1 = __webpack_require__(5);
 var CollectionComponent = (function (_super) {
     __extends(CollectionComponent, _super);
     function CollectionComponent() {
@@ -236,6 +243,10 @@ var CollectionComponent = (function (_super) {
                 " / ",
                 collection.GetTotalCars(),
                 " collected"),
+            React.createElement("h5", null,
+                "$",
+                collection.GetBonusText(),
+                " bonus"),
             React.createElement("hr", null)));
     };
     return CollectionComponent;
@@ -245,12 +256,37 @@ exports.CollectionComponent = CollectionComponent;
 
 /***/ }),
 /* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var React = __webpack_require__(0);
+var NavbarComponent = (function (_super) {
+    __extends(NavbarComponent, _super);
+    function NavbarComponent() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    NavbarComponent.prototype.render = function () {
+        return React.createElement("input", { className: "form-control mr-sm-2", type: "text", placeholder: "Search", onChange: this.props.handleSearch });
+    };
+    return NavbarComponent;
+}(React.Component));
+exports.NavbarComponent = NavbarComponent;
+
+
+/***/ }),
+/* 4 */
 /***/ (function(module, exports) {
 
 module.exports = ReactDOM;
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -300,7 +336,7 @@ exports.CarCard = CarCard;
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -311,10 +347,10 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var React = __webpack_require__(0);
-var ReactDOM = __webpack_require__(3);
+var ReactDOM = __webpack_require__(4);
 var Classes_1 = __webpack_require__(1);
 var CollectionComponent_1 = __webpack_require__(2);
-var NavbarComponent_1 = __webpack_require__(6);
+var NavbarComponent_1 = __webpack_require__(3);
 var CarCargoMakerState = (function () {
     function CarCargoMakerState() {
         this.collections = [];
@@ -369,31 +405,6 @@ var CargoMarker = (function (_super) {
 }(React.Component));
 exports.CargoMarker = CargoMarker;
 ReactDOM.render(React.createElement(CargoMarker, null), document.getElementById("content"));
-
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var React = __webpack_require__(0);
-var NavbarComponent = (function (_super) {
-    __extends(NavbarComponent, _super);
-    function NavbarComponent() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    NavbarComponent.prototype.render = function () {
-        return React.createElement("input", { className: "form-control mr-sm-2", type: "text", placeholder: "Search", onChange: this.props.handleSearch });
-    };
-    return NavbarComponent;
-}(React.Component));
-exports.NavbarComponent = NavbarComponent;
 
 
 /***/ })
