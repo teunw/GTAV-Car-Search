@@ -4,7 +4,8 @@ import {CarCard} from "./CarCardComponent";
 
 export interface CollectionComponentProps {
     collection: Collection;
-    showCollected?: boolean;
+    hideCollected?: boolean;
+    hideUncollected?: boolean;
 }
 
 export class CollectionComponent extends React.Component<CollectionComponentProps, {}> {
@@ -15,9 +16,16 @@ export class CollectionComponent extends React.Component<CollectionComponentProp
 
     render() {
         const collection = this.props.collection;
-        const carCards = collection.cars
-            .filter(c => c.IsCollected() == this.props.showCollected)
-            .map((c) => <CarCard key={c.createKey()} car={c}
+
+        let cars = this.props.collection.cars;
+        if (this.props.hideCollected) {
+            cars = cars.filter((c) => !c.IsCollected());
+        }
+        if (this.props.hideUncollected) {
+            cars = cars.filter((c) => c.IsCollected());
+        }
+
+        const carCards = cars.map((c) => <CarCard key={c.createKey()} car={c}
                                  backgroundColor={c.IsCollected() ? this.CollectedColor : this.NotCollectedColor}/>);
         const rows = [];
         for (let i = 0; i < carCards.length; i += this.RowLength) {

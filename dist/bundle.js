@@ -223,9 +223,14 @@ var CollectionComponent = (function (_super) {
     CollectionComponent.prototype.render = function () {
         var _this = this;
         var collection = this.props.collection;
-        var carCards = collection.cars
-            .filter(function (c) { return c.IsCollected() == _this.props.showCollected; })
-            .map(function (c) { return React.createElement(CarCardComponent_1.CarCard, { key: c.createKey(), car: c, backgroundColor: c.IsCollected() ? _this.CollectedColor : _this.NotCollectedColor }); });
+        var cars = this.props.collection.cars;
+        if (this.props.hideCollected) {
+            cars = cars.filter(function (c) { return !c.IsCollected(); });
+        }
+        if (this.props.hideUncollected) {
+            cars = cars.filter(function (c) { return c.IsCollected(); });
+        }
+        var carCards = cars.map(function (c) { return React.createElement(CarCardComponent_1.CarCard, { key: c.createKey(), car: c, backgroundColor: c.IsCollected() ? _this.CollectedColor : _this.NotCollectedColor }); });
         var rows = [];
         for (var i = 0; i < carCards.length; i += this.RowLength) {
             var element = React.createElement("div", { key: collection.name + i, className: "row" },
@@ -255,31 +260,7 @@ exports.CollectionComponent = CollectionComponent;
 
 
 /***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var React = __webpack_require__(0);
-var NavbarComponent = (function (_super) {
-    __extends(NavbarComponent, _super);
-    function NavbarComponent() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    NavbarComponent.prototype.render = function () {
-        return React.createElement("input", { className: "form-control mr-sm-2", type: "text", placeholder: "Search", onChange: this.props.handleSearch });
-    };
-    return NavbarComponent;
-}(React.Component));
-exports.NavbarComponent = NavbarComponent;
-
-
-/***/ }),
+/* 3 */,
 /* 4 */
 /***/ (function(module, exports) {
 
@@ -350,11 +331,13 @@ var React = __webpack_require__(0);
 var ReactDOM = __webpack_require__(4);
 var Classes_1 = __webpack_require__(1);
 var CollectionComponent_1 = __webpack_require__(2);
-var NavbarComponent_1 = __webpack_require__(3);
+var SearchComponent_1 = __webpack_require__(7);
 var CarCargoMakerState = (function () {
     function CarCargoMakerState() {
         this.collections = [];
         this.search = "";
+        this.hideUncollected = false;
+        this.hideCollected = false;
     }
     return CarCargoMakerState;
 }());
@@ -364,8 +347,10 @@ var CargoMarker = (function (_super) {
     function CargoMarker(props, context) {
         var _this = _super.call(this, props, context) || this;
         _this.state = new CarCargoMakerState();
-        _this.handleSearch = _this.handleSearch.bind(_this);
         Classes_1.CarRetriever.AddRefreshListener(_this);
+        _this.handleSearch = _this.handleSearch.bind(_this);
+        _this.handleHideUncollected = _this.handleHideUncollected.bind(_this);
+        _this.handleHideCollected = _this.handleHideCollected.bind(_this);
         return _this;
     }
     CargoMarker.prototype.onRefresh = function (collections) {
@@ -378,6 +363,16 @@ var CargoMarker = (function (_super) {
             search: e.target.value
         });
     };
+    CargoMarker.prototype.handleHideUncollected = function (e) {
+        this.setState({
+            hideUncollected: e
+        });
+    };
+    CargoMarker.prototype.handleHideCollected = function (e) {
+        this.setState({
+            hideCollected: e
+        });
+    };
     CargoMarker.prototype.render = function () {
         var _this = this;
         if (this.state.collections.length == 0) {
@@ -387,24 +382,77 @@ var CargoMarker = (function (_super) {
                 _this.setState({ collections: collections });
             });
         }
-        var notCollectedCars = this.state.collections.filter(function (collection) { return !collection.IsCompletelyCollected() && collection.Search(_this.state.search); });
-        var collectedCars = this.state.collections.filter(function (collection) { return collection.IsPartlyCollected() && collection.Search(_this.state.search); });
-        var notCollected = notCollectedCars.map(function (nc) { return React.createElement(CollectionComponent_1.CollectionComponent, { key: "list" + nc.name, showCollected: false, collection: nc }); });
-        var collected = collectedCars.map(function (c) { return React.createElement(CollectionComponent_1.CollectionComponent, { key: "list" + c.name, showCollected: true, collection: c }); });
+        var notCollectedCars = this.state.collections.filter(function (collection) { return collection.Search(_this.state.search); });
+        var notCollected = notCollectedCars.map(function (nc) { return React.createElement(CollectionComponent_1.CollectionComponent, { key: "list" + nc.name, hideCollected: _this.state.hideCollected, hideUncollected: _this.state.hideUncollected, collection: nc }); });
         return (React.createElement("div", { id: "list" },
-            React.createElement(NavbarComponent_1.NavbarComponent, { handleSearch: this.handleSearch }),
+            React.createElement(SearchComponent_1.SearchComponent, { handleSearch: this.handleSearch, handleHideCollected: this.handleHideCollected, handleHideUncollected: this.handleHideUncollected }),
             React.createElement("div", { className: "card" },
                 React.createElement("h3", { className: "card-header text-danger" }, "Not Collected"),
-                React.createElement("div", { className: "card-block" }, notCollected)),
-            React.createElement("br", null),
-            React.createElement("div", { className: "card" },
-                React.createElement("h3", { className: "card-header" }, "Collected"),
-                React.createElement("div", { className: "card-block" }, collected))));
+                React.createElement("div", { className: "card-block" }, notCollected))));
     };
     return CargoMarker;
 }(React.Component));
 exports.CargoMarker = CargoMarker;
 ReactDOM.render(React.createElement(CargoMarker, null), document.getElementById("content"));
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var React = __webpack_require__(0);
+var SearchState = (function () {
+    function SearchState() {
+        this.hideCollected = false;
+        this.hideUncollected = false;
+    }
+    return SearchState;
+}());
+exports.SearchState = SearchState;
+var SearchComponent = (function (_super) {
+    __extends(SearchComponent, _super);
+    function SearchComponent(props, context) {
+        var _this = _super.call(this, props, context) || this;
+        _this.state = new SearchState();
+        _this.handleCollectedCheckbox = _this.handleCollectedCheckbox.bind(_this);
+        _this.handleUncollectedCheckbox = _this.handleUncollectedCheckbox.bind(_this);
+        return _this;
+    }
+    SearchComponent.prototype.handleUncollectedCheckbox = function (e) {
+        e.persist();
+        this.setState(function (prev) { return ({ hideUncollected: e.target.checked }); });
+        this.props.handleHideUncollected(!this.state.hideUncollected);
+        console.log(this.state.hideUncollected);
+    };
+    SearchComponent.prototype.handleCollectedCheckbox = function (e) {
+        e.persist();
+        this.setState(function (prev) { return ({ hideCollected: e.target.checked }); });
+        this.props.handleHideCollected(!this.state.hideCollected);
+        console.log(this.state.hideCollected);
+    };
+    SearchComponent.prototype.render = function () {
+        return (React.createElement("div", { className: "card" },
+            React.createElement("div", { className: "card-block" },
+                React.createElement("input", { className: "form-control mr-sm-2", type: "text", placeholder: "Search", onChange: this.props.handleSearch }),
+                React.createElement("label", { className: "custom-control custom-checkbox" },
+                    React.createElement("input", { type: "checkbox", className: "custom-control-input", checked: this.state.hideCollected, onChange: this.handleCollectedCheckbox }),
+                    React.createElement("span", { className: "custom-control-indicator" }),
+                    React.createElement("span", { className: "custom-control-description" }, "Hide collected cars")),
+                React.createElement("label", { className: "custom-control custom-checkbox" },
+                    React.createElement("input", { type: "checkbox", className: "custom-control-input", checked: this.state.hideUncollected, onChange: this.handleUncollectedCheckbox }),
+                    React.createElement("span", { className: "custom-control-indicator" }),
+                    React.createElement("span", { className: "custom-control-description" }, "Hide uncollected cars")))));
+    };
+    return SearchComponent;
+}(React.Component));
+exports.SearchComponent = SearchComponent;
 
 
 /***/ })

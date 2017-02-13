@@ -3,12 +3,14 @@ import * as ReactDOM from 'react-dom';
 import * as $ from 'jquery';
 import {CarRetriever, Collection, RefreshListener} from './Classes';
 import {CollectionComponent} from './CollectionComponent';
-import {NavbarComponent} from "./NavbarComponent";
+import {SearchComponent} from "./SearchComponent";
 import ChangeEvent = React.ChangeEvent;
 
 export class CarCargoMakerState {
     public collections: Collection[] = [];
     public search: string = "";
+    public hideUncollected : boolean = false;
+    public hideCollected : boolean = false;
 }
 
 export class CargoMarker extends React.Component<{}, CarCargoMakerState> implements RefreshListener {
@@ -16,8 +18,11 @@ export class CargoMarker extends React.Component<{}, CarCargoMakerState> impleme
     constructor(props: {}, context: any) {
         super(props, context);
         this.state = new CarCargoMakerState();
-        this.handleSearch = this.handleSearch.bind(this);
         CarRetriever.AddRefreshListener(this);
+
+        this.handleSearch = this.handleSearch.bind(this);
+        this.handleHideUncollected = this.handleHideUncollected.bind(this);
+        this.handleHideCollected = this.handleHideCollected.bind(this);
     }
 
     onRefresh(collections: Collection[]): void {
@@ -32,6 +37,18 @@ export class CargoMarker extends React.Component<{}, CarCargoMakerState> impleme
         });
     }
 
+    public handleHideUncollected(e:boolean) {
+        this.setState({
+            hideUncollected: e
+        });
+    }
+
+    public handleHideCollected(e:boolean) {
+        this.setState({
+            hideCollected: e
+        });
+    }
+
     render() {
         if (this.state.collections.length == 0) {
             CarRetriever
@@ -41,26 +58,22 @@ export class CargoMarker extends React.Component<{}, CarCargoMakerState> impleme
                 });
         }
 
-        const notCollectedCars = this.state.collections.filter((collection) => !collection.IsCompletelyCollected() && collection.Search(this.state.search));
-        const collectedCars = this.state.collections.filter((collection) => collection.IsPartlyCollected() && collection.Search(this.state.search));
+        const notCollectedCars = this.state.collections.filter((collection) => collection.Search(this.state.search));
 
         const notCollected = notCollectedCars.map((nc) => <CollectionComponent key={"list" + nc.name}
-                                                                               showCollected={false}
+                                                                               hideCollected={this.state.hideCollected}
+                                                                               hideUncollected={this.state.hideUncollected}
                                                                                collection={nc}/>);
-        const collected = collectedCars.map((c) => <CollectionComponent key={"list" + c.name} showCollected={true}
-                                                                        collection={c}/>);
 
         return (
             <div id="list">
-                <NavbarComponent handleSearch={this.handleSearch} />
+                <SearchComponent
+                    handleSearch={this.handleSearch}
+                    handleHideCollected={this.handleHideCollected}
+                    handleHideUncollected={this.handleHideUncollected} />
                 <div className="card">
                     <h3 className="card-header text-danger">Not Collected</h3>
                     <div className="card-block">{notCollected}</div>
-                </div>
-                <br/>
-                <div className="card">
-                    <h3 className="card-header">Collected</h3>
-                    <div className="card-block">{collected}</div>
                 </div>
             </div>);
     }
