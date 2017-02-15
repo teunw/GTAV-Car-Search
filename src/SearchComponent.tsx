@@ -26,14 +26,14 @@ export class SearchComponent extends React.Component<SearchProps, SearchState> {
 
     public handleUncollectedCheckbox(e:ChangeEvent<HTMLInputElement>) {
         e.persist();
-        this.setState((prev) => ({hideUncollected: e.target.checked}));
+        this.setState({hideUncollected: e.target.checked});
         this.props.handleHideUncollected(!this.state.hideUncollected);
         console.log(this.state.hideUncollected);
     }
 
     public handleCollectedCheckbox(e:ChangeEvent<HTMLInputElement>) {
         e.persist();
-        this.setState((prev) => ({hideCollected: e.target.checked}));
+        this.setState({hideCollected: e.target.checked});
         this.props.handleHideCollected(!this.state.hideCollected);
         console.log(this.state.hideCollected);
     }

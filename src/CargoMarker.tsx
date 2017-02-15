@@ -72,7 +72,7 @@ export class CargoMarker extends React.Component<{}, CarCargoMakerState> impleme
                     handleHideCollected={this.handleHideCollected}
                     handleHideUncollected={this.handleHideUncollected} />
                 <div className="card">
-                    <h3 className="card-header text-danger">Not Collected</h3>
+                    <h3 className="card-header">Cars</h3>
                     <div className="card-block">{notCollected}</div>
                 </div>
             </div>);
