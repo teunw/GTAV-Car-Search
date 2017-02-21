@@ -213,13 +213,15 @@ var React = __webpack_require__(0);
 var CarCardComponent_1 = __webpack_require__(5);
 var CollectionComponent = (function (_super) {
     __extends(CollectionComponent, _super);
-    function CollectionComponent() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
+    function CollectionComponent(props, context) {
+        var _this = _super.call(this, props, context) || this;
         _this.RowLength = 3;
-        _this.NotCollectedColor = "#FFEBEE";
-        _this.CollectedColor = "#E8F5E9";
+        _this.onCarStateChanged = _this.onCarStateChanged.bind(_this);
         return _this;
     }
+    CollectionComponent.prototype.onCarStateChanged = function (car) {
+        this.setState({});
+    };
     CollectionComponent.prototype.render = function () {
         var _this = this;
         var collection = this.props.collection;
@@ -230,7 +232,7 @@ var CollectionComponent = (function (_super) {
         if (this.props.hideUncollected) {
             cars = cars.filter(function (c) { return c.IsCollected(); });
         }
-        var carCards = cars.map(function (c) { return React.createElement(CarCardComponent_1.CarCard, { key: c.createKey(), car: c, backgroundColor: c.IsCollected() ? _this.CollectedColor : _this.NotCollectedColor }); });
+        var carCards = cars.map(function (c) { return React.createElement(CarCardComponent_1.CarCard, { key: c.createKey(), car: c, onStateChanged: _this.onCarStateChanged }); });
         var rows = [];
         for (var i = 0; i < carCards.length; i += this.RowLength) {
             var element = React.createElement("div", { key: collection.name + i, className: "row" },
@@ -336,29 +338,37 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var React = __webpack_require__(0);
-var Classes_1 = __webpack_require__(1);
-var CarCardProps = (function () {
-    function CarCardProps() {
+var CarCardState = (function () {
+    function CarCardState() {
     }
-    return CarCardProps;
+    return CarCardState;
 }());
-exports.CarCardProps = CarCardProps;
+exports.CarCardState = CarCardState;
 var CarCard = (function (_super) {
     __extends(CarCard, _super);
     function CarCard(props, context) {
         var _this = _super.call(this, props, context) || this;
+        _this.NotCollectedColor = "#FFEBEE";
+        _this.CollectedColor = "#E8F5E9";
+        _this.state = new CarCardState();
         _this.onButtonClicked = _this.onButtonClicked.bind(_this);
         return _this;
     }
+    CarCard.prototype.componentDidMount = function () {
+        this.setState({ collected: this.props.car.IsCollected() });
+    };
     CarCard.prototype.onButtonClicked = function () {
         var car = this.props.car;
         car.SetCollected(!car.IsCollected());
-        Classes_1.CarRetriever.TriggerRefresh();
+        this.setState({
+            collected: car.IsCollected()
+        });
+        this.props.onStateChanged(car);
     };
     CarCard.prototype.render = function () {
         var _this = this;
         var style = {
-            "backgroundColor": this.props.backgroundColor
+            "backgroundColor": this.state.collected ? this.CollectedColor : this.NotCollectedColor
         };
         return React.createElement("div", { className: "col-sm-4" },
             React.createElement("div", { className: "card", style: style },

@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Collection} from "./Classes";
+import {Collection, Car} from "./Classes";
 import {CarCard} from "./CarCardComponent";
 
 export interface CollectionComponentProps {
@@ -11,8 +11,16 @@ export interface CollectionComponentProps {
 export class CollectionComponent extends React.Component<CollectionComponentProps, {}> {
 
     private readonly RowLength = 3;
-    private readonly NotCollectedColor = "#FFEBEE";
-    private readonly CollectedColor = "#E8F5E9";
+
+
+    constructor(props: CollectionComponentProps, context: any) {
+        super(props, context);
+        this.onCarStateChanged = this.onCarStateChanged.bind(this);
+    }
+
+    private onCarStateChanged(car:Car) {
+        this.setState({});
+    }
 
     render() {
         const collection = this.props.collection;
@@ -25,8 +33,7 @@ export class CollectionComponent extends React.Component<CollectionComponentProp
             cars = cars.filter((c) => c.IsCollected());
         }
 
-        const carCards = cars.map((c) => <CarCard key={c.createKey()} car={c}
-                                 backgroundColor={c.IsCollected() ? this.CollectedColor : this.NotCollectedColor}/>);
+        const carCards = cars.map((c) => <CarCard key={c.createKey()} car={c} onStateChanged={this.onCarStateChanged} />);
         const rows = [];
         for (let i = 0; i < carCards.length; i += this.RowLength) {
             const element = <div key={collection.name + i}
