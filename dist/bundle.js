@@ -63,14 +63,14 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 11);
+/******/ 	return __webpack_require__(__webpack_require__.s = 6);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
 /***/ (function(module, exports) {
 
-module.exports = Vue;
+module.exports = React;
 
 /***/ }),
 /* 1 */
@@ -78,291 +78,16 @@ module.exports = Vue;
 
 "use strict";
 
-Object.defineProperty(exports, "__esModule", { value: true });
-var Collection_1 = __webpack_require__(10);
-var CarService = (function () {
-    function CarService() {
-    }
-    CarService.getCollections = function (arr) {
-        this.getData(function (d) {
-            var collections = Collection_1.Collection.constructCollections(d.collections);
-            arr(collections);
-        });
-    };
-    CarService.getData = function (f) {
-        var xmlhttp = new XMLHttpRequest();
-        var url = "./cars.json";
-        xmlhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                var obj = JSON.parse(this.responseText);
-                f(obj);
-            }
-        };
-        xmlhttp.open("GET", url, true);
-        xmlhttp.send();
-    };
-    CarService.getCars = function (f) {
-        this.getData(function (d) {
-            var cars = d.cars.map(function (ic) { return Collection_1.Collection.constructCar(ic); });
-            f(cars);
-        });
-    };
-    CarService.getCarRows = function (cars, rowLength) {
-        if (rowLength === void 0) { rowLength = 8; }
-        var newArr = [];
-        var tempArr = [];
-        cars.forEach(function (c) {
-            if (tempArr.length >= rowLength) {
-                newArr.push(tempArr);
-                tempArr = [];
-            }
-            tempArr.push(c);
-        });
-        newArr.push(tempArr);
-        return newArr;
-    };
-    return CarService;
-}());
-exports.CarService = CarService;
-
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var SearchQuery = (function () {
-    function SearchQuery() {
-        this.query = "";
-        this.hideCollected = false;
-        this.hideUncollected = false;
-    }
-    return SearchQuery;
-}());
-exports.SearchQuery = SearchQuery;
-
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var Vue = __webpack_require__(0);
-function getCardCardComponent() {
-    return Vue.component("CarCardComponent", {
-        template: "\n        <div class=\"col s8 m6\">\n            <div class=\"card darken-4\" v-bind:class=\"[car.IsCollected() ? 'green' : 'red']\">\n                <div class=\"card-content white-text\">\n                    <span class=\"card-title\">{{car.getNameCapitalized()}}</span>\n                    <p class=\"card-text\">Plate: {{car.getPlateCapitalized()}}</p>\n                </div>\n                <div class=\"card-action darken-3\">\n                        <a href=\"javascript:void(0)\" class=\"white-text\" v-on:click=\"ToggleCollected()\">{{car.IsCollected() ? \"Put back\" : \"Mark collected\"}}</a>\n                    </div>\n            </div>\n        </div>\n        ",
-        methods: {
-            ToggleCollected: function (e) {
-                this.car.ToggleCollected();
-                this.$forceUpdate();
-                this.$emit("update");
-            }
-        },
-        props: ["car"]
-        // We need to explicitly annotate the exported options object
-        // with the CarCardComponent type
-    });
-}
-exports.getCardCardComponent = getCardCardComponent;
-
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var Car_service_1 = __webpack_require__(1);
-var SearchQuery_1 = __webpack_require__(2);
-var Vue = __webpack_require__(0);
-function CarMarkerComponent() {
-    return Vue.component("CollectionMarkerComponent", {
-        template: "\n        <ul id=\"collectionMarkerComponent\" class=\"collection\">\n            <SearchComponent @search=\"updateSearch\"></SearchComponent>\n            <ul class=\"row collection\" v-for=\"row in getRows()\">\n                <li class=\"collection-item\">\n                <CarCardComponent v-for=\"car in row\" v-bind:car=\"car\"></CarCardComponent>\n                </li>\n            </ul>       \n        </ul>\n        ",
-        data: function () {
-            return {
-                cars: [],
-                searchQuery: new SearchQuery_1.SearchQuery()
-            };
-        },
-        methods: {
-            updateSearch: function (searchQuery) {
-                this.$forceUpdate();
-                if (searchQuery == undefined)
-                    return;
-                this.searchQuery = searchQuery;
-            },
-            getRows: function () {
-                var _this = this;
-                var viewCars = this.cars.filter(function (c) { return c.Search(_this.searchQuery.query); });
-                if (this.searchQuery.hideCollected) {
-                    viewCars = viewCars.filter(function (c) { return !c.IsCollected(); });
-                }
-                if (this.searchQuery.hideUncollected) {
-                    viewCars = viewCars.filter(function (c) { return c.IsCollected(); });
-                }
-                return Car_service_1.CarService.getCarRows(viewCars);
-            }
-        },
-        mounted: function () {
-            var comp = this;
-            Car_service_1.CarService.getCars(function (c) {
-                comp.cars = c;
-            });
-        }
-        // We need to explicitly annotate the exported options object
-        // with the CarCardComponent type
-    });
-}
-exports.CarMarkerComponent = CarMarkerComponent;
-
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var Vue = __webpack_require__(0);
-var Car_service_1 = __webpack_require__(1);
-function getCollectedComponent() {
-    return Vue.component("CollectionComponent", {
-        template: "<li id=\"collectionComponent\" class=\"collection-item\">\n                <span class=\"title\"><h4>{{ collection.name }}</h4></span>\n                <p>\n                    <div class=\"row\" v-for=\"row in getCarRows(collection)\">\n                        <CarCardComponent @update=\"update\" v-for=\"car in row\" v-bind:car=\"car\"></CarCardComponent>\n                    </div>                \n                    <h6>{{collection.GetAmountCollected()}} / {{collection.GetTotalCars()}} collected</h6>\n                    <h6>{{collection.GetBonusText()}} bonus</h6>\n                </p>\n            </li>\n    ",
-        props: ["collection"],
-        methods: {
-            update: function () {
-                this.$emit("update");
-            },
-            getCarRows: function (collection, rowLength) {
-                if (rowLength === void 0) { rowLength = 4; }
-                return Car_service_1.CarService.getCarRows(collection.cars, rowLength);
-            }
-        }
-    });
-}
-exports.getCollectedComponent = getCollectedComponent;
-
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var SearchQuery_1 = __webpack_require__(2);
-var Vue = __webpack_require__(0);
-var Car_service_1 = __webpack_require__(1);
-function CollectionMarkerComponent() {
-    return Vue.component("CollectionMarkerComponent", {
-        template: "\n        <div>\n        <SearchComponent @search=\"updateSearch\"></SearchComponent>\n        <ul id=\"collectionMarkerComponent\" class=\"collection\">\n            <CollectionComponent @update=\"updateSearch\" v-bind:collection=\"collection\" v-for=\"collection in this.getCollections()\"></CollectionComponent>\n        </ul>\n        </div>",
-        data: function () {
-            return {
-                collections: [],
-                searchQuery: new SearchQuery_1.SearchQuery(),
-                hideCollected: false,
-                hideUncollected: false
-            };
-        },
-        methods: {
-            updateSearch: function (searchQuery) {
-                this.$forceUpdate();
-                if (searchQuery == undefined)
-                    return;
-                this.searchQuery = searchQuery;
-            },
-            getCollections: function () {
-                var _this = this;
-                var collections = this.collections.filter(function (c) { return c.Search(_this.searchQuery.query); });
-                if (this.searchQuery.hideCollected) {
-                    collections = collections.filter(function (c) { return !c.IsCompletelyCollected(); });
-                }
-                if (this.searchQuery.hideUncollected) {
-                    collections = collections.filter(function (c) { return !c.IsUncollected(); });
-                }
-                return collections;
-            }
-        },
-        mounted: function () {
-            var comp = this;
-            Car_service_1.CarService.getCollections(function (c) {
-                comp.collections = c;
-            });
-        }
-        // We need to explicitly annotate the exported options object
-        // with the CarCardComponent type
-    });
-}
-exports.CollectionMarkerComponent = CollectionMarkerComponent;
-
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var SearchQuery_1 = __webpack_require__(2);
-var Vue = __webpack_require__(0);
-function getSearchComponent() {
-    return Vue.component("SearchComponent", {
-        template: "\n        <div class=\"col s8 m6\">\n            <div class=\"card card-small darken-4\">\n                <div class=\"card-content white-text\">\n                    <div class=\"input-field col s6\">\n                        <input class=\"black-text\" id=\"search\" type=\"text\" v-on:input=\"updateSearch(null)\" v-model=\"searchQuery.query\">\n                        <label for=\"search\">Search</label>\n                    </div>\n                    <div class=\"input-field col s6\">\n                        <input id=\"hidecollected\" type=\"checkbox\" class=\"validate\" v-on:change=\"updateSearch(true)\" v-model=\"searchQuery.hideCollected\">\n                        <label for=\"hidecollected\">Hide collected</label>\n                    </div>\n                    <div class=\"input-field col s6\">\n                        <input type=\"checkbox\" class=\"validate\" v-on:change=\"updateSearch(false)\" v-model=\"searchQuery.hideUncollected\">\n                        <label for=\"hideuncollected\">Hide not collected</label>\n                    </div>\n                </div>\n            </div>\n        </div>\n        ",
-        methods: {
-            updateSearch: function (collected) {
-                if (this.searchQuery.hideCollected && this.searchQuery.hideUncollected && collected != null) {
-                    this.searchQuery.hideCollected = collected == true;
-                    this.searchQuery.hideUncollected = collected == false;
-                }
-                this.$emit('search', this.searchQuery);
-            }
-        },
-        data: function () {
-            return {
-                searchQuery: new SearchQuery_1.SearchQuery(),
-                hideCollected: false,
-                hideUncollected: false
-            };
-        }
-        // We need to explicitly annotate the exported options object
-        // with the CarCardComponent type
-    });
-}
-exports.getSearchComponent = getSearchComponent;
-
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports) {
-
-module.exports = VueRouter;
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
 var Car = (function () {
     function Car(name, plate) {
         this.name = name;
         this.plate = plate;
     }
     Car.prototype.IsCollected = function () {
-        return localStorage.getItem(this.createKey()) == "true";
+        return CarRetriever.GetCarStorage(this);
     };
     Car.prototype.SetCollected = function (collected) {
-        localStorage.setItem(this.createKey(), String(collected));
-    };
-    Car.prototype.ToggleCollected = function () {
-        this.SetCollected(!this.IsCollected());
-        console.log(this.IsCollected());
+        CarRetriever.SetCarStorage(this, collected);
     };
     Car.prototype.getNameCapitalized = function () {
         return this.name.slice(0, 1).toUpperCase() + this.name.slice(1).toLowerCase();
@@ -395,19 +120,10 @@ var Car = (function () {
     return Car;
 }());
 exports.Car = Car;
-
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var Car_1 = __webpack_require__(9);
 var Collection = (function () {
-    function Collection(name, cars) {
+    function Collection(name, cars, color) {
         this.name = name;
+        this.color = color;
         this.cars = cars.map(Collection.constructCar);
     }
     Collection.prototype.IsCompletelyCollected = function () {
@@ -415,9 +131,6 @@ var Collection = (function () {
     };
     Collection.prototype.IsPartlyCollected = function () {
         return this.GetAmountCollected() > 0;
-    };
-    Collection.prototype.IsUncollected = function () {
-        return this.GetAmountCollected() != this.cars.length;
     };
     Collection.prototype.GetAmountCollected = function () {
         return this.cars.filter(function (c) { return c.IsCollected(); }).length;
@@ -433,58 +146,322 @@ var Collection = (function () {
         return bonus.slice(0, 2) + "." + bonus.slice(2, 9999);
     };
     Collection.prototype.Search = function (query) {
-        if (query == undefined)
-            return true;
         query = query.toLowerCase();
         var carSearch = this.cars.filter(function (c) { return c.Search(query); }).length > 0;
         var collectionSearch = this.name.toLowerCase().indexOf(query) != -1;
         return carSearch || collectionSearch;
     };
     Collection.constructCar = function (car) {
-        return new Car_1.Car(car.name, car.plate);
-    };
-    Collection.constructCollections = function (icollections) {
-        var collections = [];
-        icollections.forEach(function (icoll) {
-            collections.push(new Collection(icoll.name, icoll.cars));
-        });
-        return collections;
+        return new Car(car.name, car.plate);
     };
     return Collection;
 }());
 exports.Collection = Collection;
+var CarRetriever = (function () {
+    function CarRetriever() {
+    }
+    CarRetriever.AddRefreshListener = function (refreshListener) {
+        this.RefreshListeners.push(refreshListener);
+    };
+    CarRetriever.RemoveRefreshListener = function (refreshListener) {
+        var index = this.RefreshListeners.indexOf(refreshListener);
+        this.RefreshListeners = this.RefreshListeners.splice(index, 1);
+    };
+    CarRetriever.TriggerRefresh = function () {
+        var _this = this;
+        this.GetCollections().then(function (c) {
+            _this.RefreshListeners.forEach(function (r) { return r.onRefresh(c); });
+        });
+    };
+    CarRetriever.GetCollections = function () {
+        var result = $.Deferred();
+        var cars = $.get("./cars.json");
+        cars.then(function (data) {
+            var parsed = [];
+            data.collections.forEach(function (collection) {
+                parsed.push(new Collection(collection.name, collection.cars, collection.color));
+            });
+            result.resolve(parsed);
+        });
+        cars.fail(function () { return result.reject([]); });
+        return result.promise();
+    };
+    CarRetriever.GetCarStorage = function (cars) {
+        return localStorage.getItem(cars.createKey()) == "true";
+    };
+    CarRetriever.SetCarStorage = function (car, bool) {
+        localStorage.setItem(car.createKey(), String(bool));
+    };
+    return CarRetriever;
+}());
+CarRetriever.RefreshListeners = [];
+exports.CarRetriever = CarRetriever;
 
 
 /***/ }),
-/* 11 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-Object.defineProperty(exports, "__esModule", { value: true });
-var Vue = __webpack_require__(0);
-var VueRouter = __webpack_require__(8);
-var CollectionMarkerComponent_1 = __webpack_require__(6);
-var CollectionComponent_1 = __webpack_require__(5);
-var CarCardComponent_1 = __webpack_require__(3);
-var CarMarkerComponent_1 = __webpack_require__(4);
-var SearchComponent_1 = __webpack_require__(7);
-Vue.use(VueRouter);
-var CollectionComponent = CollectionComponent_1.getCollectedComponent();
-var CarComponent = CarCardComponent_1.getCardCardComponent();
-var CollectionMarker = CollectionMarkerComponent_1.CollectionMarkerComponent();
-var CarsComponent = CarMarkerComponent_1.CarMarkerComponent();
-var SearchComponent = SearchComponent_1.getSearchComponent();
-var router = new VueRouter({
-    mode: "history",
-    routes: [
-        { path: '/', component: CollectionMarker },
-        { path: '/cars', component: CarsComponent }
-    ]
-});
-new Vue({
-    router: router
-}).$mount('#app');
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var React = __webpack_require__(0);
+var CarCardComponent_1 = __webpack_require__(5);
+var CollectionComponent = (function (_super) {
+    __extends(CollectionComponent, _super);
+    function CollectionComponent(props, context) {
+        var _this = _super.call(this, props, context) || this;
+        _this.RowLength = 3;
+        _this.onCarStateChanged = _this.onCarStateChanged.bind(_this);
+        return _this;
+    }
+    CollectionComponent.prototype.onCarStateChanged = function (car) {
+        this.setState({});
+    };
+    CollectionComponent.prototype.render = function () {
+        var _this = this;
+        var collection = this.props.collection;
+        var cars = this.props.collection.cars;
+        if (this.props.hideCollected) {
+            cars = cars.filter(function (c) { return !c.IsCollected(); });
+        }
+        if (this.props.hideUncollected) {
+            cars = cars.filter(function (c) { return c.IsCollected(); });
+        }
+        var carCards = cars.map(function (c) { return React.createElement(CarCardComponent_1.CarCard, { key: c.createKey(), car: c, onStateChanged: _this.onCarStateChanged }); });
+        var rows = [];
+        for (var i = 0; i < carCards.length; i += this.RowLength) {
+            var element = React.createElement("div", { key: collection.name + i, className: "row" },
+                carCards[i],
+                carCards[i + 1],
+                carCards[i + 2]);
+            rows.push(element);
+        }
+        return (React.createElement("div", { id: collection.name, className: "" },
+            React.createElement("h3", null, collection.name),
+            rows,
+            React.createElement("br", null),
+            React.createElement("h5", null,
+                collection.GetAmountCollected(),
+                " / ",
+                collection.GetTotalCars(),
+                " collected"),
+            React.createElement("h5", null,
+                "$",
+                collection.GetBonusText(),
+                " bonus"),
+            React.createElement("hr", null)));
+    };
+    return CollectionComponent;
+}(React.Component));
+exports.CollectionComponent = CollectionComponent;
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var React = __webpack_require__(0);
+var SearchState = (function () {
+    function SearchState() {
+        this.hideCollected = false;
+        this.hideUncollected = false;
+    }
+    return SearchState;
+}());
+exports.SearchState = SearchState;
+var SearchComponent = (function (_super) {
+    __extends(SearchComponent, _super);
+    function SearchComponent(props, context) {
+        var _this = _super.call(this, props, context) || this;
+        _this.state = new SearchState();
+        _this.handleCollectedCheckbox = _this.handleCollectedCheckbox.bind(_this);
+        _this.handleUncollectedCheckbox = _this.handleUncollectedCheckbox.bind(_this);
+        return _this;
+    }
+    SearchComponent.prototype.handleUncollectedCheckbox = function (e) {
+        e.persist();
+        this.setState({ hideUncollected: e.target.checked });
+        this.props.handleHideUncollected(!this.state.hideUncollected);
+        console.log(this.state.hideUncollected);
+    };
+    SearchComponent.prototype.handleCollectedCheckbox = function (e) {
+        e.persist();
+        this.setState({ hideCollected: e.target.checked });
+        this.props.handleHideCollected(!this.state.hideCollected);
+        console.log(this.state.hideCollected);
+    };
+    SearchComponent.prototype.render = function () {
+        return (React.createElement("div", { className: "card" },
+            React.createElement("div", { className: "card-block" },
+                React.createElement("input", { className: "form-control mr-sm-2", type: "text", placeholder: "Search", onChange: this.props.handleSearch }),
+                React.createElement("label", { className: "custom-control custom-checkbox" },
+                    React.createElement("input", { type: "checkbox", className: "custom-control-input", checked: this.state.hideCollected, onChange: this.handleCollectedCheckbox }),
+                    React.createElement("span", { className: "custom-control-indicator" }),
+                    React.createElement("span", { className: "custom-control-description" }, "Hide collected cars")),
+                React.createElement("label", { className: "custom-control custom-checkbox" },
+                    React.createElement("input", { type: "checkbox", className: "custom-control-input", checked: this.state.hideUncollected, onChange: this.handleUncollectedCheckbox }),
+                    React.createElement("span", { className: "custom-control-indicator" }),
+                    React.createElement("span", { className: "custom-control-description" }, "Hide uncollected cars")))));
+    };
+    return SearchComponent;
+}(React.Component));
+exports.SearchComponent = SearchComponent;
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports) {
+
+module.exports = ReactDOM;
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var React = __webpack_require__(0);
+var CarCardState = (function () {
+    function CarCardState() {
+    }
+    return CarCardState;
+}());
+exports.CarCardState = CarCardState;
+var CarCard = (function (_super) {
+    __extends(CarCard, _super);
+    function CarCard(props, context) {
+        var _this = _super.call(this, props, context) || this;
+        _this.NotCollectedColor = "#FFEBEE";
+        _this.CollectedColor = "#E8F5E9";
+        _this.state = new CarCardState();
+        _this.onButtonClicked = _this.onButtonClicked.bind(_this);
+        return _this;
+    }
+    CarCard.prototype.componentDidMount = function () {
+        this.setState({ collected: this.props.car.IsCollected() });
+    };
+    CarCard.prototype.onButtonClicked = function () {
+        var car = this.props.car;
+        car.SetCollected(!car.IsCollected());
+        this.setState({
+            collected: car.IsCollected()
+        });
+        this.props.onStateChanged(car);
+    };
+    CarCard.prototype.render = function () {
+        var _this = this;
+        var style = {
+            "backgroundColor": this.state.collected ? this.CollectedColor : this.NotCollectedColor
+        };
+        return React.createElement("div", { className: "col-sm-4" },
+            React.createElement("div", { className: "card", style: style },
+                React.createElement("div", { className: "card-block" },
+                    React.createElement("h3", { className: "card-title" }, this.props.car.getNameCapitalized()),
+                    React.createElement("p", { className: "card-text" },
+                        "Plate: ",
+                        this.props.car.getPlateCapitalized()),
+                    React.createElement("button", { className: "btn btn-primary", onClick: function () { return _this.onButtonClicked(); } }, this.props.car.IsCollected() ? "Put back" : "Mark collected"))));
+    };
+    return CarCard;
+}(React.Component));
+exports.CarCard = CarCard;
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var React = __webpack_require__(0);
+var ReactDOM = __webpack_require__(4);
+var Classes_1 = __webpack_require__(1);
+var CollectionComponent_1 = __webpack_require__(2);
+var SearchComponent_1 = __webpack_require__(3);
+var CarCargoMakerState = (function () {
+    function CarCargoMakerState() {
+        this.collections = [];
+        this.search = "";
+        this.hideUncollected = false;
+        this.hideCollected = false;
+    }
+    return CarCargoMakerState;
+}());
+exports.CarCargoMakerState = CarCargoMakerState;
+var CargoMarker = (function (_super) {
+    __extends(CargoMarker, _super);
+    function CargoMarker(props, context) {
+        var _this = _super.call(this, props, context) || this;
+        _this.state = new CarCargoMakerState();
+        Classes_1.CarRetriever.AddRefreshListener(_this);
+        _this.handleSearch = _this.handleSearch.bind(_this);
+        _this.handleHideUncollected = _this.handleHideUncollected.bind(_this);
+        _this.handleHideCollected = _this.handleHideCollected.bind(_this);
+        return _this;
+    }
+    CargoMarker.prototype.onRefresh = function (collections) {
+        this.setState({
+            collections: collections
+        });
+    };
+    CargoMarker.prototype.handleSearch = function (e) {
+        this.setState({
+            search: e.target.value
+        });
+    };
+    CargoMarker.prototype.handleHideUncollected = function (e) {
+        this.setState({
+            hideUncollected: e
+        });
+    };
+    CargoMarker.prototype.handleHideCollected = function (e) {
+        this.setState({
+            hideCollected: e
+        });
+    };
+    CargoMarker.prototype.render = function () {
+        var _this = this;
+        if (this.state.collections.length == 0) {
+            Classes_1.CarRetriever
+                .GetCollections()
+                .done(function (collections) {
+                _this.setState({ collections: collections });
+            });
+        }
+        var notCollectedCars = this.state.collections.filter(function (collection) { return collection.Search(_this.state.search); });
+        var notCollected = notCollectedCars.map(function (nc) { return React.createElement(CollectionComponent_1.CollectionComponent, { key: "list" + nc.name, hideCollected: _this.state.hideCollected, hideUncollected: _this.state.hideUncollected, collection: nc }); });
+        return (React.createElement("div", { id: "list" },
+            React.createElement(SearchComponent_1.SearchComponent, { handleSearch: this.handleSearch, handleHideCollected: this.handleHideCollected, handleHideUncollected: this.handleHideUncollected }),
+            React.createElement("div", { className: "card" },
+                React.createElement("h3", { className: "card-header" }, "Cars"),
+                React.createElement("div", { className: "card-block" }, notCollected))));
+    };
+    return CargoMarker;
+}(React.Component));
+exports.CargoMarker = CargoMarker;
+ReactDOM.render(React.createElement(CargoMarker, null), document.getElementById("content"));
 
 
 /***/ })

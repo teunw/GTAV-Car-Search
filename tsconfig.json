@@ -1,15 +1,13 @@
 {
-    "compilerOptions": {
-        "outDir": "./dist/",
-        "sourceMap": true,
-        "noImplicitAny": true,
-        "module": "commonjs",
-        "target": "es5",
-        "allowSyntheticDefaultImports": true
-    },
-    "include": [
-        "./src/**/*",
-        "./node_modules/vue/types/index.d.ts",
-        "./node_modules/vue-router/types/index.d.ts"
-    ]
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "sourceMap": true,
+    "noImplicitAny": true,
+    "module": "commonjs",
+    "target": "es5",
+    "jsx": "react"
+  },
+  "include": [
+    "./src/**/*"
+  ]
 }
