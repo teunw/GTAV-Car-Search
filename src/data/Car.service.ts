@@ -14,7 +14,7 @@ export class CarService {
 
     private static getData(f:Function) {
         let xmlhttp = new XMLHttpRequest();
-        let url = "/cars.json";
+        let url = "./cars.json";
 
         xmlhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
