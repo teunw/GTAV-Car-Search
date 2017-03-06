@@ -1,5 +1,6 @@
+var webpack = require('webpack');
 module.exports = {
-    entry: "./src/CargoMarker.tsx",
+    entry: "./src/index.ts",
     output: {
         filename: "bundle.js",
         path: __dirname + "/dist"
@@ -26,8 +27,8 @@ module.exports = {
     // This is important because it allows us to avoid bundling all of our
     // dependencies, which allows browsers to cache those libraries between builds.
     externals: {
-        "react": "React",
-        "react-dom": "ReactDOM",
-        "$": "$"
-    },
+        "vue": "Vue",
+        "vue-router": "VueRouter",
+        "jquery": "$"  
+    }
 };
