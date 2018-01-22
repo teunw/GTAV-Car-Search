@@ -1,0 +1,502 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.cars = {
+    "collections": [
+        {
+            "name": "Uninsurable Collector: Jay Norris",
+            "cars": [
+                {
+                    "name": "X80 PROTO",
+                    "plate": "MAKEBANK"
+                },
+                {
+                    "name": "T20",
+                    "plate": "DEVIL"
+                },
+                {
+                    "name": "OSIRIS",
+                    "plate": "SLEEK"
+                }
+            ]
+        },
+        {
+            "name": "Birds of paradise collector: Curtis Cray Esq",
+            "cars": [
+                {
+                    "name": "CHEETAH",
+                    "plate": "BUZZED"
+                },
+                {
+                    "name": "TYRUS",
+                    "plate": "CITRUS"
+                },
+                {
+                    "name": "FMJ",
+                    "plate": "CATCHME"
+                },
+                {
+                    "name": "ENTITY XF",
+                    "plate": "OVERFLOD"
+                }
+            ]
+        },
+        {
+            "name": "Fading Power Collector: Keith Collins MD",
+            "cars": [
+                {
+                    "name": "COQUETTE BLACKFIN",
+                    "plate": "VINTAGE"
+                },
+                {
+                    "name": "NIGHTSHADE",
+                    "plate": "TH370S"
+                }
+            ]
+        },
+        {
+            "name": "No Direct Sunlight Collector: DJ Playlist",
+            "cars": [
+                {
+                    "name": "FELTZER",
+                    "plate": "POWERFUL"
+                },
+                {
+                    "name": "811",
+                    "plate": "SLICK"
+                },
+                {
+                    "name": "BESTIA GTS",
+                    "plate": "BEASTY"
+                }
+            ]
+        },
+        {
+            "name": "Stay Declasse Collector: MS. M Schultz",
+            "cars": [
+                {
+                    "name": "SABRE TURBO CUSTOM",
+                    "plate": "BOUNCE"
+                },
+                {
+                    "name": "TAMPA",
+                    "plate": "CHARGED"
+                },
+                {
+                    "name": "MAMBA",
+                    "plate": "BLACKMAMBA"
+                }
+            ]
+        },
+        {
+            "name": "Molten Metal Collector: Ronnie Bonelli",
+            "cars": [
+                {
+                    "name": "ALPHA",
+                    "plate": "VISIONARY"
+                },
+                {
+                    "name": "REAPER",
+                    "plate": "DEATH4U"
+                },
+                {
+                    "name": "MASSACRO",
+                    "plate": "BOSS"
+                },
+                {
+                    "name": "ZENTORNO",
+                    "plate": "WINNING"
+                }
+            ]
+        },
+        {
+            "name": "Pastel Perfection Collector: Cloe Parker",
+            "cars": [
+                {
+                    "name": "COQUETTE CLASSIC",
+                    "plate": "TOPLESS"
+                },
+                {
+                    "name": "VERLIERER",
+                    "plate": "PRECIOUS"
+                },
+                {
+                    "name": "ETR1",
+                    "plate": "PRETTY"
+                }
+            ]
+        },
+        {
+            "name": "Hip to be Square Collector: Tao Cheng",
+            "cars": [
+                {
+                    "name": "OMNIS",
+                    "plate": "WIDEBOD"
+                },
+                {
+                    "name": "TROPOS RALLYE",
+                    "plate": "1985"
+                },
+                {
+                    "name": "JESTER",
+                    "plate": "NOFOOL"
+                },
+                {
+                    "name": "SULTAN RS",
+                    "plate": "SNOWFLKE"
+                }
+            ]
+        },
+        {
+            "name": "Cris Formage",
+            "cars": [
+                {
+                    "name": "BANSHEE 900R",
+                    "plate": "DRIFTER"
+                },
+                {
+                    "name": "STIRLING GT",
+                    "plate": "RALLY"
+                },
+                {
+                    "name": "SEVEN-70",
+                    "plate": "ALLOY5"
+                },
+                {
+                    "name": "TURISMO R",
+                    "plate": "TPD4WG"
+                }
+            ]
+        },
+        {
+            "name": "End of the Empires Collector: The Sultan of Amir",
+            "cars": [
+                {
+                    "name": "Z-TYPE",
+                    "plate": "BIG MONEY"
+                },
+                {
+                    "name": "ROOSEVELT VALOR",
+                    "plate": "OLD TIMER"
+                }
+            ]
+        }
+    ],
+    "cars": [
+        {
+            "name": "Sabre Turbo Custom",
+            "plate": "0R1G1N4L",
+            "range": ""
+        },
+        {
+            "name": "Tropos Rallye",
+            "plate": "1MSORAD",
+            "range": "Mid"
+        },
+        {
+            "name": "Reaper",
+            "plate": "2FA5T4U",
+            "range": "Top"
+        },
+        {
+            "name": "Tropos Rallye",
+            "plate": "31GHT135",
+            "range": "Mid"
+        },
+        {
+            "name": "Sultan RS",
+            "plate": "5H0W0FF",
+            "range": "Mid"
+        },
+        {
+            "name": "Bestia GTS",
+            "plate": "5MOOTH",
+            "range": "Standard"
+        },
+        {
+            "name": "Bestia GTS",
+            "plate": "5T34LTH",
+            "range": "Standard"
+        },
+        {
+            "name": "ETR1",
+            "plate": "B1GBOY",
+            "range": "Top"
+        },
+        {
+            "name": "Cheetah",
+            "plate": "B1GC4T",
+            "range": "Mid"
+        },
+        {
+            "name": "Tyrus",
+            "plate": "B35TL4P",
+            "range": "Top"
+        },
+        {
+            "name": "Massacro",
+            "plate": "B4N4N4",
+            "range": "Mid"
+        },
+        {
+            "name": "Cheetah",
+            "plate": "BIGC47",
+            "range": "Mid"
+        },
+        {
+            "name": "T20",
+            "plate": "CAR4M3L",
+            "range": "Top"
+        },
+        {
+            "name": "Z-Type",
+            "plate": "CEO",
+            "range": "Top"
+        },
+        {
+            "name": "Coquette Classic",
+            "plate": "CL455Y",
+            "range": "Mid"
+        },
+        {
+            "name": "Tampa",
+            "plate": "CRU151N",
+            "range": "Standard"
+        },
+        {
+            "name": "Verlierer",
+            "plate": "CURV35",
+            "range": "Mid"
+        },
+        {
+            "name": "Banshee 900R",
+            "plate": "D0M1N0",
+            "range": "Standard"
+        },
+        {
+            "name": "Omnis",
+            "plate": "D1RTY",
+            "range": "Mid"
+        },
+        {
+            "name": "Nightshade",
+            "plate": "DE4DLY",
+            "range": "Standard"
+        },
+        {
+            "name": "Nightshade",
+            "plate": "E4TME",
+            "range": "Standard"
+        },
+        {
+            "name": "Sultan RS",
+            "plate": "F1D3L1TY",
+            "range": "Mid"
+        },
+        {
+            "name": "Seven-70",
+            "plate": "FRU1TY",
+            "range": "Mid"
+        },
+        {
+            "name": "X80 Proto",
+            "plate": "FUTUR3",
+            "range": "Top"
+        },
+        {
+            "name": "Reaper",
+            "plate": "GRIM",
+            "range": "Top"
+        },
+        {
+            "name": "Sabre Turbo Custom",
+            "plate": "GUNZOUT",
+            "range": "Standard"
+        },
+        {
+            "name": "Zentorno",
+            "plate": "H3RO",
+            "range": "Mid"
+        },
+        {
+            "name": "FMJ",
+            "plate": "HOT4U",
+            "range": "Top"
+        },
+        {
+            "name": "Jester",
+            "plate": "HOTP1NK",
+            "range": "Standard"
+        },
+        {
+            "name": "Banshee 900R",
+            "plate": "HOWL3R",
+            "range": "Standard"
+        },
+        {
+            "name": "Entity XF",
+            "plate": "IML4T3",
+            "range": "Mid"
+        },
+        {
+            "name": "Turismo R",
+            "plate": "IN4H4ZE",
+            "range": "Standard"
+        },
+        {
+            "name": "FMJ",
+            "plate": "JOK3R",
+            "range": "Top"
+        },
+        {
+            "name": "Z-Type",
+            "plate": "K1NGP1N",
+            "range": "Top"
+        },
+        {
+            "name": "Feltzer",
+            "plate": "K3YL1M3",
+            "range": "Standard"
+        },
+        {
+            "name": "Roosevelt Valor",
+            "plate": "L4WL355",
+            "range": "Top"
+        },
+        {
+            "name": "Alpha",
+            "plate": "LONG80Y",
+            "range": "Standard"
+        },
+        {
+            "name": "811_",
+            "plate": "M1DLIFE",
+            "range": "Top"
+        },
+        {
+            "name": "Cheetah",
+            "plate": "M1DN1GHT",
+            "range": "Mid"
+        },
+        {
+            "name": "Turismo R",
+            "plate": "M1LKYW4Y",
+            "range": "Standard"
+        },
+        {
+            "name": "ETR1",
+            "plate": "MON4RCH",
+            "range": "Top"
+        },
+        {
+            "name": "Tampa",
+            "plate": "MU5CL3",
+            "range": "Standard"
+        },
+        {
+            "name": "Omnis",
+            "plate": "OBEYM3",
+            "range": "Mid"
+        },
+        {
+            "name": "Osiris",
+            "plate": "OH3LLO",
+            "range": "Top"
+        },
+        {
+            "name": "Mamba",
+            "plate": "OLDBLU3",
+            "range": "Top"
+        },
+        {
+            "name": "Zentorno",
+            "plate": "OLDN3W5",
+            "range": "Mid"
+        },
+        {
+            "name": "Verlierer",
+            "plate": "OUTFRONT",
+            "range": "Mid"
+        },
+        {
+            "name": "Omnis",
+            "plate": "PH4R4OH",
+            "range": "Top"
+        },
+        {
+            "name": "Alpha",
+            "plate": "R31GN",
+            "range": ""
+        },
+        {
+            "name": "811_",
+            "plate": "R3G4L",
+            "range": "Top"
+        },
+        {
+            "name": "Feltzer",
+            "plate": "R4C3R",
+            "range": "Standard"
+        },
+        {
+            "name": "Seven-70",
+            "plate": "SP33DY",
+            "range": "Mid"
+        },
+        {
+            "name": "Coquette Classic",
+            "plate": "T0FF33",
+            "range": "Mid"
+        },
+        {
+            "name": "Jester",
+            "plate": "TOPCLOWN",
+            "range": "Standard"
+        },
+        {
+            "name": "T20",
+            "plate": "TOPSP33D",
+            "range": ""
+        },
+        {
+            "name": "Stirling GT",
+            "plate": "TOUR3R",
+            "range": "Top"
+        },
+        {
+            "name": "Tyrus",
+            "plate": "TR3X",
+            "range": "Top"
+        },
+        {
+            "name": "Massacro",
+            "plate": "TROP1CAL",
+            "range": "Standard"
+        },
+        {
+            "name": "X80 Proto",
+            "plate": "TURBO",
+            "range": "Top"
+        },
+        {
+            "name": "Mamba",
+            "plate": "V1P",
+            "range": "Top"
+        },
+        {
+            "name": "Roosevelt Valor",
+            "plate": "V4LOR",
+            "range": "Top"
+        },
+        {
+            "name": "Omnis",
+            "plate": "W1D3B0D",
+            "range": "Top"
+        },
+        {
+            "name": "Coquette BlackFin",
+            "plate": "W1P3OUT",
+            "range": "Mid"
+        }
+    ]
+};
+//# sourceMappingURL=Data.js.map

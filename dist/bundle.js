@@ -6,9 +6,9 @@
 /******/ 	function __webpack_require__(moduleId) {
 /******/
 /******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId])
+/******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
-/******/
+/******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
@@ -79,9 +79,9 @@ module.exports = Vue;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Data_1 = __webpack_require__(13);
-var Collection_1 = __webpack_require__(11);
-var CarService = (function () {
+var Data_1 = __webpack_require__(11);
+var Collection_1 = __webpack_require__(10);
+var CarService = /** @class */ (function () {
     function CarService() {
     }
     CarService.getCollections = function (arr) {
@@ -126,7 +126,7 @@ exports.CarService = CarService;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var SearchQuery = (function () {
+var SearchQuery = /** @class */ (function () {
     function SearchQuery() {
         this.query = "";
         this.hideCollected = false;
@@ -330,20 +330,19 @@ exports.getSearchComponent = getSearchComponent;
 
 
 /***/ }),
-/* 8 */,
-/* 9 */
+/* 8 */
 /***/ (function(module, exports) {
 
 module.exports = VueRouter;
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Car = (function () {
+var Car = /** @class */ (function () {
     function Car(name, plate) {
         this.name = name;
         this.plate = plate;
@@ -392,14 +391,14 @@ exports.Car = Car;
 
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Car_1 = __webpack_require__(10);
-var Collection = (function () {
+var Car_1 = __webpack_require__(9);
+var Collection = /** @class */ (function () {
     function Collection(name, cars) {
         this.name = name;
         this.cars = cars.map(Collection.constructCar);
@@ -450,40 +449,7 @@ exports.Collection = Collection;
 
 
 /***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var Vue = __webpack_require__(0);
-var VueRouter = __webpack_require__(9);
-var CollectionMarkerComponent_1 = __webpack_require__(6);
-var CollectionComponent_1 = __webpack_require__(5);
-var CarCardComponent_1 = __webpack_require__(3);
-var CarMarkerComponent_1 = __webpack_require__(4);
-var SearchComponent_1 = __webpack_require__(7);
-Vue.use(VueRouter);
-var CollectionComponent = CollectionComponent_1.getCollectedComponent();
-var CarComponent = CarCardComponent_1.getCardCardComponent();
-var CollectionMarker = CollectionMarkerComponent_1.CollectionMarkerComponent();
-var CarsComponent = CarMarkerComponent_1.CarMarkerComponent();
-var SearchComponent = SearchComponent_1.getSearchComponent();
-var router = new VueRouter({
-    mode: "history",
-    routes: [
-        { path: '/', name: "CollectionMarker", component: CollectionMarker },
-        { path: '/cars', name: "CarMarker", component: CarsComponent },
-        { path: "*", redirect: { name: "CollectionMarker" } }
-    ]
-});
-var v = new Vue({
-    router: router
-}).$mount("#app");
-
-
-/***/ }),
-/* 13 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -988,6 +954,39 @@ exports.cars = {
         }
     ]
 };
+
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(0);
+var VueRouter = __webpack_require__(8);
+var CollectionMarkerComponent_1 = __webpack_require__(6);
+var CollectionComponent_1 = __webpack_require__(5);
+var CarCardComponent_1 = __webpack_require__(3);
+var CarMarkerComponent_1 = __webpack_require__(4);
+var SearchComponent_1 = __webpack_require__(7);
+Vue.use(VueRouter);
+var CollectionComponent = CollectionComponent_1.getCollectedComponent();
+var CarComponent = CarCardComponent_1.getCardCardComponent();
+var CollectionMarker = CollectionMarkerComponent_1.CollectionMarkerComponent();
+var CarsComponent = CarMarkerComponent_1.CarMarkerComponent();
+var SearchComponent = SearchComponent_1.getSearchComponent();
+var router = new VueRouter({
+    mode: "history",
+    routes: [
+        { path: '/', name: "CollectionMarker", component: CollectionMarker },
+        { path: '/cars', name: "CarMarker", component: CarsComponent },
+        { path: "*", redirect: { name: "CollectionMarker" } }
+    ]
+});
+var v = new Vue({
+    router: router
+}).$mount("#app");
 
 
 /***/ })

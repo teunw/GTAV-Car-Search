@@ -5,13 +5,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/jquery": "^2.0.40",
-    "@types/materialize-css": "^0.98.0",
-    "jquery": "^2.1.1",
-    "materialize-css": "^0.98.0",
-    "vue": "^2.1.10",
-    "vue-class-component": "^5.0.0",
-    "vue-router": "^2.2.1"
+    "@types/jquery": "^2.0.48",
+    "@types/materialize-css": "^0.98.3",
+    "jquery": "^3.3.1",
+    "materialize-css": "^0.98.2",
+    "vue": "^2.5.13",
+    "vue-class-component": "^5.0.2",
+    "vue-router": "^2.8.1"
   },
   "devDependencies": {
     "awesome-typescript-loader": "^3.0.7",
